@@ -77,11 +77,10 @@ function setup() { "use strict";
       context.fill();
     }
 
-    
-    
     DrawBackground("#c4b39c"); 
     DrawFloor("#ffa54f");
     DrawFloorTexture("black");
+    DrawMouseHole("black");
     context.save();
     context.translate(dx,dy);
     context.restore();
