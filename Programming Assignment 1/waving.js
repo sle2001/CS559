@@ -72,8 +72,25 @@ function setup() { "use strict";
     function DrawMouseHole(color) {
       context.beginPath();
       context.fillStyle = color;
-      context.moveTo(200,200);
-      context.arc(288, 75, 70, 0, Math.PI, false);
+      context.arc(50, 350, 20, 0, Math.PI, true);
+      context.closePath();
+      context.fill();
+    }
+
+    function DrawMouse(color) {
+      // Body
+      context.beginPath();
+      context.fillStyle = color;
+      context.arc(53,350,15,0,Math.PI, true);
+      context.closePath();
+      context.fill();
+      
+      // Head
+      context.beginPath();
+      context.fillStyle = color;
+      context.moveTo(60,334);
+      context.lineTo(80,341.5);
+      context.lineTo(64,350.5);
       context.closePath();
       context.fill();
     }
@@ -84,6 +101,7 @@ function setup() { "use strict";
     DrawMouseHole("black");
     context.save();
     context.translate(dx,dy);
+    DrawMouse("gray");
     context.restore();
   }
   slider1.addEventListener("input",draw);
