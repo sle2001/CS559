@@ -31,6 +31,7 @@ function setup() { "use strict";
       context.lineTo(0,400);
       context.lineTo(400,400);
       context.lineTo(400,350);
+      context.closePath();
       context.fill();
     }
 
@@ -66,6 +67,14 @@ function setup() { "use strict";
       context.lineTo(0,400);
       
       context.stroke();
+    }
+
+    function DrawMouseHole(color) {
+      context.beginPath();
+      context.fillStyle = color;
+      context.arc(288, 75, 70, 0, Math.PI, false);
+      context.closePath();
+      context.fill();
     }
 
     
