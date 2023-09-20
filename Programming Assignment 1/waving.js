@@ -72,6 +72,7 @@ function setup() { "use strict";
     function DrawMouseHole(color) {
       context.beginPath();
       context.fillStyle = color;
+      context.moveTo(200,200);
       context.arc(288, 75, 70, 0, Math.PI, false);
       context.closePath();
       context.fill();
