@@ -69,18 +69,18 @@ function setup() { "use strict";
       context.stroke();
     }
 
-    function DrawMouseHole(color) {
+    /* function DrawMouseHole(color) {
       context.beginPath();
       context.fillStyle = color;
       context.arc(288, 75, 70, 0, Math.PI, false);
       context.closePath();
       context.fill();
-    }
+    } */
     
     DrawBackground("#c4b39c"); 
     DrawFloor("#ffa54f");
     DrawFloorTexture("black");
-    DrawMouseHole("black");
+    //DrawMouseHole("black");
     context.save();
     context.translate(dx,dy);
     context.restore();
