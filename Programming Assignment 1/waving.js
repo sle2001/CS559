@@ -10,47 +10,72 @@ function setup() { "use strict";
     // use the sliders to get various parameters
     var dx = slider1.value;
     var dy = slider2.value;
-    
-    function DrawLshape(color) {
+
+    // Draw the wall of the house
+    function DrawBackground(color) {
       context.beginPath();
       context.fillStyle = color;
-      context.moveTo(50,25);
-      context.lineTo(150,25);
-      context.lineTo(150,75);
-      context.lineTo(100,75);
-      context.lineTo(100,175);
-      context.lineTo(50,175);
+      context.moveTo(0,0);
+      context.lineTo(0,350);
+      context.lineTo(400,350);
+      context.lineTo(400,0);
       context.closePath();
       context.fill();      
     }
-    
-    function DrawAxes(color) {
-      context.strokeStyle=color;
+
+    // Draw the wood floor
+    function DrawFloor(color) {
       context.beginPath();
-      // Axes
-      context.moveTo(120,0);context.lineTo(0,0);context.lineTo(0,120);
-      // Arrowheads
-      context.moveTo(110,5);context.lineTo(120,0);context.lineTo(110,-5);
-      context.moveTo(5,110);context.lineTo(0,120);context.lineTo(-5,110);
-      // X-label
-      context.moveTo(130,0);context.lineTo(140,10);
-      context.moveTo(130,10);context.lineTo(140,0);
-      // Y-label
-      context.moveTo(0,130);context.lineTo(5,135);context.lineTo(10,130);
-      context.moveTo(5,135);context.lineTo(5,142);
+      context.fillStyle = color;
+      context.moveTo(0,350);
+      context.lineTo(0,400);
+      context.lineTo(400,400);
+      context.lineTo(400,350);
+      context.fill();
+    }
+
+    function DrawFloorTexture(color) {
+      context.beginPath();
+      context.strokeStyle = color;
+      context.lineWidth = 1;
+
+      // Horizontal lines
+      context.moveTo(0,362.5);
+      context.lineTo(400,362.5);
+
+      context.moveTo(0,375);
+      context.lineTo(400,375);
+      
+      context.moveTo(0,387.5);
+      context.lineTo(400,387.5);
+
+      // Vertical lines
+      context.moveTo(100,350);
+      context.lineTo(100,362.5);
+      
+      context.moveTo(200,362.5);
+      context.lineTo(200,375);
+
+      context.moveTo(300, 375);
+      context.lineTo(300,387.5);
+
+      context.moveTo(400,387.5);
+      context.lineTo(400,400);
+
+      context.moveTo(0,387.5);
+      context.lineTo(0,400);
       
       context.stroke();
-     }
+    }
+
     
-    // make sure you understand these
- 
-    DrawAxes("black");
+    
+    DrawBackground("#c4b39c"); 
+    DrawFloor("#ffa54f");
+    DrawFloorTexture("black");
     context.save();
     context.translate(dx,dy);
-    DrawAxes("green");
-    DrawLshape("green");
     context.restore();
-    
   }
   slider1.addEventListener("input",draw);
   slider2.addEventListener("input",draw);
