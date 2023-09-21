@@ -111,13 +111,33 @@ function setup() { "use strict";
     }
 
     function DrawCheese(color) {
+      // Top of cheese
       context.beginPath();
       context.fillStyle = color;
-      context.moveTo(360, 370);
-      context.lineTo(370, 365);
-      context.lineTo(370, 375);
+      context.moveTo(350, 370);
+      context.lineTo(390, 355);
+      context.lineTo(390, 370);
       context.closePath();
       context.fill();
+
+      // Side of cheese
+      context.beginPath();
+      context.fillStyle = color;
+      context.moveTo(350,370);
+      context.lineTo(390,370);
+      context.lineTo(390,390);
+      context.lineTo(350,390);
+      context.closePath();
+      context.fill();
+    }
+
+    function DrawCheeseTexture(color) {
+      context.beginPath();
+      context.strokeStyle = color;
+      context.lineWidth = 0.01;
+      context.moveTo(350,370);
+      context.lineTo(390,370);
+      context.stroke();
     }
 
     DrawBackground("#c4b39c"); 
@@ -125,6 +145,7 @@ function setup() { "use strict";
     DrawFloorTexture("black");
     DrawMouseHole("black");
     DrawCheese("yellow");
+    DrawCheeseTexture("black");
     context.save();
     context.translate(dx,dy);
     DrawMouse("gray");
