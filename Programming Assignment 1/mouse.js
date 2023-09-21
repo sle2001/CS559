@@ -132,12 +132,60 @@ function setup() { "use strict";
     }
 
     function DrawCheeseTexture(color) {
+      // Line to show top and side of cheese
       context.beginPath();
       context.strokeStyle = color;
-      context.lineWidth = 0.01;
+      context.lineWidth = 1;
       context.moveTo(350,370);
       context.lineTo(390,370);
       context.stroke();
+
+      // Cheese holes
+      context.beginPath();
+      context.strokeStyle = color;
+      context.lineWidth = 1
+      context.arc(365, 380, 4, 0, Math.PI*2);
+      context.closePath();
+      context.stroke();
+
+      context.beginPath();
+      context.strokeStyle = color;
+      context.lineWidth = 1
+      context.arc(380, 383, 4, 0, Math.PI*2);
+      context.closePath();
+      context.stroke();
+
+      context.beginPath();
+      context.fillStyle = "#ffa54f";
+      context.lineWidth = 1
+      context.arc(350, 380, 4, Math.PI/2, 3*Math.PI/2, true);
+      context.closePath();
+      context.fill();
+
+      context.beginPath();
+      context.strokeStyle = color;
+      context.lineWidth = 1
+      context.arc(380, 365, 2.5, 0, 2*Math.PI);
+      context.closePath();
+      context.stroke();
+
+      context.beginPath();
+      context.fillStyle = "#FFDE00";
+      context.arc(380, 365, 2.45, 0, 2*Math.PI);
+      context.closePath();
+      context.fill();
+
+      context.beginPath();
+      context.fillStyle = "#FFDE00";
+      context.arc(380, 383, 3.9, 0, 2*Math.PI);
+      context.closePath();
+      context.fill();
+
+      context.beginPath();
+      context.fillStyle = "#FFDE00";
+      context.arc(365, 380, 3.9, 0, 2*Math.PI);
+      context.closePath();
+      context.fill();
     }
 
     DrawBackground("#c4b39c"); 
