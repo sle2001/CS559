@@ -69,6 +69,54 @@ function setup() { "use strict";
       context.stroke();
     }
 
+    function DrawTable(color) {
+      // Legs
+      context.beginPath();
+      context.fillStyle = color;
+      context.moveTo(120,370);
+      context.lineTo(145,370);
+      context.lineTo(155,100);
+      context.lineTo(110,100);
+      context.closePath();
+      context.fill();
+
+      context.beginPath();
+      context.fillStyle = color;
+      context.moveTo(250,370);
+      context.lineTo(275,370);
+      context.lineTo(285,100);
+      context.lineTo(240,100);
+      context.closePath();
+      context.fill();
+
+      // Top
+      context.beginPath();
+      context.fillStyle = color;
+      context.moveTo(50,0);
+      context.lineTo(350,0);
+      context.lineTo(350,100);
+      context.lineTo(50,100);
+      context.closePath();
+      context.fill();
+    }
+    
+    function DrawTableTexture(color) {
+      context.beginPath();
+      context.strokeStyle = color;
+      context.lineWidth = 5;
+      context.moveTo(100, 25);
+      context.lineTo(300, 25);
+      context.lineTo(300, 75);
+      context.lineTo(100, 75);
+      context.closePath();
+      context.stroke();
+
+      context.beginPath();
+      context.fillStyle = color;
+      context.arc(200, 50, 10, 0, 2*Math.PI);
+      context.closePath();
+      context.fill();
+    }
     function DrawMouseHole(color) {
       context.beginPath();
       context.fillStyle = color;
@@ -76,7 +124,7 @@ function setup() { "use strict";
       context.closePath();
       context.fill();
     }
-
+    
     function DrawMouse(color) {
       // Body
       context.beginPath();
@@ -198,6 +246,8 @@ function setup() { "use strict";
     context.translate(dx,dy);
     DrawMouse("gray");
     context.restore();
+    DrawTable("#855E42");
+    DrawTableTexture("black");
   }
   slider1.addEventListener("input",draw);
   slider2.addEventListener("input",draw);
