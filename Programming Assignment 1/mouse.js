@@ -36,8 +36,8 @@ function setup() { "use strict";
     }
 
     function DrawFloorTexture(color) {
-      context.beginPath();
       context.strokeStyle = color;
+      context.beginPath();
       context.lineWidth = 1;
 
       // Horizontal lines
@@ -93,12 +93,38 @@ function setup() { "use strict";
       context.lineTo(64,350.5);
       context.closePath();
       context.fill();
+
+      // Nose
+      context.beginPath();
+      context.fillStyle = "pink";
+      context.arc(80,341.5,1.5,0,Math.PI*2);
+      context.closePath();
+      context.fill();
+
+      // Tail
+      context.beginPath();
+      context.strokeStyle = color;
+      context.lineWidth = 2;
+      context.moveTo(38,348);
+      context.lineTo(30,348);
+      context.stroke();
+    }
+
+    function DrawCheese(color) {
+      context.beginPath();
+      context.fillStyle = color;
+      context.moveTo(360, 370);
+      context.lineTo(370, 365);
+      context.lineTo(370, 375);
+      context.closePath();
+      context.fill();
     }
 
     DrawBackground("#c4b39c"); 
     DrawFloor("#ffa54f");
     DrawFloorTexture("black");
     DrawMouseHole("black");
+    DrawCheese("yellow");
     context.save();
     context.translate(dx,dy);
     DrawMouse("gray");
