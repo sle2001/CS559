@@ -14,21 +14,40 @@ function Sharingan(context,x,y,sz,path)
     this.pathU = 0;
     this.context = context;
 }
+Sharingan.prototype.drawDashCircle = function() {
+    this.context.save();
+    this.context.beginPath();
+    this.context.arc(100,200,30,0,2*Math.PI);
+    this.context.stroke();
+
+    this.context.beginPath();
+    this.context.arc(300,200,30,0,2*Math.PI);
+    this.context.stroke();
+    this.context.restore();
+};
 
 Sharingan.prototype.drawSclera = function() {
     this.context.save();
     this.context.beginPath();
     this.context.arc(100, 200, 60, 0, 2*Math.PI);
     this.context.fill();
+    this.context.restore();
 
+    this.context.save();
     this.context.beginPath();
     this.context.arc(300, 200, 60, 0, 2*Math.PI);
-    this.context.fill();  
+    this.context.fill();
     this.context.restore();
 };
 
 Sharingan.prototype.draw = function() {
     this.context.save();
+
+    this.context.fillStyle = "#FA0D17";
+    this.drawSclera();
+
+    this.context.strokeStyle = "black";
+    this.drawDashCircle();
 
     if (this.path) {
         var p = this.path.eval(this.pathU);
@@ -40,10 +59,6 @@ Sharingan.prototype.draw = function() {
         this.context.rotate(this.heading);
     }
     this.context.scale(this.size, this.size);
-
-    this.context.fillStyle = "#FA0D17";
-    
-    this.drawSclera();
 
     this.context.restore();
 }
