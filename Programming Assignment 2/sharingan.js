@@ -15,7 +15,7 @@ function Sharingan(context,x,y,sz,path)
     this.context = context;
 }
 
-Sharigan.prototype.drawSclera = function () {
+Sharingan.prototype.drawSclera = function() {
     this.context.save();
     
     this.context.beginPath();
