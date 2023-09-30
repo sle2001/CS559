@@ -18,7 +18,7 @@ function Sharingan(context,x,y,sz,path)
 Sharingan.prototype.drawTomoe = function() {
     this.context.save();
     this.context.beginPath();
-    this.context.arc(100, 170, 0, 2*Math.PI);
+    this.context.arc(100, 170, 10, 0, 2*Math.PI);
     this.context.fill();
     this.context.restore();
 };
