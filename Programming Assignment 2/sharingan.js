@@ -2,7 +2,7 @@
 
 // this is the "class definition" - always use this with "new"
 // maybe a bad choice to attach it to a context, but seems easier than passing it around
-function QuadCopter(context,x,y,sz,path)
+function Sharingan(context,x,y,sz,path)
 {
     // these are it's properties
     this.size = sz || 0.5;
@@ -18,7 +18,7 @@ function QuadCopter(context,x,y,sz,path)
     this.backPropAngle = 0;
     this.context = context;
 }
-QuadCopter.prototype.drawBlade = function() {
+Sharingan.prototype.drawBlade = function() {
     this.context.beginPath();
     this.context.moveTo(0,0);
     this.context.bezierCurveTo(5,5,   15,5,  20,5);
@@ -28,7 +28,7 @@ QuadCopter.prototype.drawBlade = function() {
     this.context.fill();
     this.context.stroke();
 };
-QuadCopter.prototype.drawProp = function() {
+Sharingan.prototype.drawProp = function() {
     this.context.save();
     this.drawBlade();
     this.context.scale(-1,1);
@@ -38,7 +38,7 @@ QuadCopter.prototype.drawProp = function() {
     this.context.arc(0,0,5,0,2*Math.PI);
     this.context.fill()
 };
-QuadCopter.prototype.drawBody = function() {
+Sharingan.prototype.drawBody = function() {
     this.context.save();
     this.context.beginPath();
     this.context.moveTo(0,25);
@@ -50,7 +50,7 @@ QuadCopter.prototype.drawBody = function() {
     this.context.stroke();
     this.context.restore();
 };
-QuadCopter.prototype.drawArm = function() {
+Sharingan.prototype.drawArm = function() {
     var d = 50*1.41421;
     this.context.save();
     this.context.beginPath();
@@ -65,7 +65,7 @@ QuadCopter.prototype.drawArm = function() {
     this.context.stroke();
     this.context.restore();
 };
-QuadCopter.prototype.draw = function() {
+Sharingan.prototype.draw = function() {
     this.context.save();
 
     if (this.path) {
@@ -125,7 +125,7 @@ QuadCopter.prototype.draw = function() {
 
     this.context.restore();
 }
-QuadCopter.prototype.update = function() {
+Sharingan.prototype.update = function() {
     this.backPropAngle  += 0.15;
     this.frontPropAngle += 0.15 * this.frontFaster;
     this.pathU += 0.1 * this.speed;
