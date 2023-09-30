@@ -14,6 +14,14 @@ function Sharingan(context,x,y,sz,path)
     this.pathU = 0;
     this.context = context;
 }
+
+Sharingan.prototype.drawTomoe = function() {
+    this.context.save();
+    this.context.beginPath();
+    this.context.arc(100, 170, 0, 2*Math.PI);
+    this.context.fill();
+    this.context.restore();
+};
 Sharingan.prototype.drawDashCircle = function() {
     this.context.save();
     this.context.beginPath();
@@ -59,7 +67,8 @@ Sharingan.prototype.draw = function() {
         this.context.rotate(this.heading);
     }
     this.context.scale(this.size, this.size);
-
+    this.context.fillStyle = "black";
+    this.drawTomoe();
     this.context.restore();
 }
 
