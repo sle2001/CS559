@@ -29,6 +29,8 @@ speed: <input id="slider1" type="range" min="0" max="100"/>
         // animation loop - clear, update, draw, schedule the next iteration
         function draw() {
             myContext.clearRect(0, 0, myCanvas.width, myCanvas.height);
+            myContext.fillStyle = "#000000";
+            myContext.fillRect(0, 0, theCanvas.width, theCanvas.height);
             theSharingans[0].speed = slider.value;
             theSharingans[1].speed = slider.value;
             myContext.save();
@@ -41,8 +43,6 @@ speed: <input id="slider1" type="range" min="0" max="100"/>
         // set up the elements
         theCanvas = document.getElementById('myCanvas');
         myContext = theCanvas.getContext('2d');
-        myContext.fillStyle = "#000000";
-        myContext.fillRect(0, 0, theCanvas.width, theCanvas.height);
         slider = document.getElementById("slider1");
         slider.value = 1;
 
