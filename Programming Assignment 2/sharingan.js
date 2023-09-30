@@ -1,5 +1,3 @@
-"use strict ";
-
 function Sharingan(context,x,y, radius, speed, theta) {
     this.x = x;
     this.y = y;
