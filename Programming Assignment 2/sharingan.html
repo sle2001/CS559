@@ -10,41 +10,24 @@
     speed: <input id="slider1" type="range" min="0" max="100" />
     <br/> 
     <script src="sharingan.js"></script>
-	<script src="paths.js"></script> 
     <script>
-		"use strict";
-		
-        function myApp() {
-          var theCanvas;
-          var myContext;
-          var slider;
-		  var theSharingans = [];
-
-          function draw() {
-            myContext.clearRect(0,0,myCanvas.width,myCanvas.height);
-		    theSharingans[0].speed = slider.value;
-	  	    theSharingans[1].speed = slider.value;
-	  	    myContext.save();
-		    theSharingans.forEach(function(c) { c.update(); })
-		    theSharingans.forEach(function(c) { c.draw(); })
-		    myContext.restore();
-		    window.requestAnimationFrame(draw):
-		  }
-
-		  theCanvas = document.getElementById('myCanvas');
-		  myContext = theCanvas.getContext('2d');
-		  slider = document.getElementById("slider1");
-		  slider.value = 1;
-
-		  theSharingans.push(new Sharingan(myContext, 50, 50, .5));
-		  theSharingans.push(new Sharingan(myContext, 100, 50, .5));
-
-		  theSharingans[0].path = new CirclePath(100, 100, 50);
-		  theSharingans[1].path = new CirclePath(100, 100, 50);
-		  draw();
-	  	}
-
-		window.onload = myApp;
+		var canvas = document.getElementById('myCanvas');
+		var context = canvas.getContext('2d');
+		var slider1 = document.getElementById("slider1");
+		slider1.value = 1;
+		var theSharingans = [];
+		theSharingans.push(new Sharingan(context, 50, 50, 25, slider1.value, 0));
+		theSharingan.push(new Sharingan(ccontext, 300, 50, 25, slider.value, 0));
+		draw = function() {
+			context.clearRect(0, 0, canvas.width, canvas.height);
+			canvas.save();
+			sharingan.speed = slider1.value
+			sharingan.update();
+			sharingan.draw();
+			context.restore();
+			window.requestAnimationFrame(draw);
+		}
+		draw();
 	</script>
 			
   </body>
