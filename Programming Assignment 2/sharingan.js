@@ -17,14 +17,11 @@ function Sharingan(context,x,y,sz,path)
 
 Sharingan.prototype.drawSclera = function() {
     this.context.save();
-    
     this.context.beginPath();
-    this.context.fillStyle = color;
     this.context.arc(100, 200, 60, 0, 2*Math.PI);
     this.context.fill();
 
     this.context.beginPath();
-    this.context.fillStyle = color;
     this.context.arc(300, 200, 60, 0, 2*Math.PI);
     this.context.fill();  
     this.context.restore();
