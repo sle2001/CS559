@@ -1,98 +1,132 @@
-function Sharingan(context, x, y, radius, speed, theta){
-    this.x = x
-    this.y = y
-    this.radius = radius
-    this.context = context
-    this.speed = speed
-    this.theta = theta
-}
+"use strict ";
 
-// Fill the back ground color
-Sharingan.prototype.fillBack = function(){
-    this.context.beginPath()
-    this.context.arc(this.x, this.y, this.radius, 0, 2*Math.PI)
-    this.context.fillStyle = "rgb(172, 6, 15)"
+// this is the "class definition" - always use this with "new"
+// maybe a bad choice to attach it to a context, but seems easier than passing it around
+function QuadCopter(context,x,y,sz,path)
+{
+    // these are it's properties
+    this.size = sz || 0.5;
+    this.frontFaster = 2;
+    this.path = path;
+    this.speed = .2;
+    // this is its state - it gets over-ridden if there is a path
+    this.posX = x || 200;
+    this.posY = y || 200;
+    this.pathU = 0;
+    this.heading = 0;
+    this.frontPropAngle = 0;
+    this.backPropAngle = 0;
+    this.context = context;
+}
+QuadCopter.prototype.drawBlade = function() {
+    this.context.beginPath();
+    this.context.moveTo(0,0);
+    this.context.bezierCurveTo(5,5,   15,5,  20,5);
+    this.context.bezierCurveTo(25,5,  35,5,  40,0);
+    this.context.bezierCurveTo(35,-5, 25,-5, 20,-5);
+    this.context.bezierCurveTo(15,-5, 5,-5,  0,0);
+    this.context.fill();
+    this.context.stroke();
+};
+QuadCopter.prototype.drawProp = function() {
+    this.context.save();
+    this.drawBlade();
+    this.context.scale(-1,1);
+    this.drawBlade();
+    this.context.restore();
+    this.context.beginPath();
+    this.context.arc(0,0,5,0,2*Math.PI);
     this.context.fill()
-}
+};
+QuadCopter.prototype.drawBody = function() {
+    this.context.save();
+    this.context.beginPath();
+    this.context.moveTo(0,25);
+    this.context.lineTo(5,25);
+    this.context.bezierCurveTo( 25,25,  20,-25, 0,-25);
+    this.context.bezierCurveTo(-20,-25, -25,25, -5,25);
+    this.context.closePath();
+    this.context.fill();
+    this.context.stroke();
+    this.context.restore();
+};
+QuadCopter.prototype.drawArm = function() {
+    var d = 50*1.41421;
+    this.context.save();
+    this.context.beginPath();
+    this.context.moveTo(  5,10);
+    this.context.lineTo(  5, d-10);
+    this.context.lineTo( 15, d);
+    this.context.lineTo(  0, d+10);
+    this.context.lineTo(-15, d);
+    this.context.lineTo( -5, d-10);
+    this.context.lineTo( -5, 10);
+    this.context.fill();
+    this.context.stroke();
+    this.context.restore();
+};
+QuadCopter.prototype.draw = function() {
+    this.context.save();
 
-// Draw the frame of Sharingan
-Sharingan.prototype.drawFrames = function(){
-    // Draw a black dot at the center
-    this.context.beginPath()
-    this.context.arc(this.x, this.y, this.radius*0.2, 0, 2*Math.PI)
+    if (this.path) {
+        var p = this.path.eval(this.pathU);
+        var dd = Math.sqrt(p[2]*p[2] + p[3]*p[3]);
+        this.context.transform(p[2]/dd,p[3]/dd, -p[3]/dd, p[2]/dd, p[0],p[1]);
+        this.context.rotate(-Math.PI/2);  // since the copter faces Y not X
+    } else {
+        this.context.translate(this.posX, this.posY);
+        this.context.rotate(this.heading);
+    }
+    this.context.scale(this.size, this.size);
+
+    this.context.fillStyle = "#A0C0A0";
+    this.context.strokeStyle = "#003300";
+
+    this.drawBody();
+
+    this.context.save();
+    this.context.rotate(Math.PI/4);
+    this.drawArm();
+    this.context.rotate(Math.PI/2);
+    this.drawArm();
+    this.context.rotate(Math.PI/2);
+    this.drawArm();
+    this.context.rotate(Math.PI/2);
+    this.drawArm();
+    this.context.restore();
+
+    this.context.save();
     this.context.fillStyle = "black"
-    this.context.fill()
+    this.context.strokeStyle = "black";
+    this.context.save();
+    this.context.translate(50,50);
+    this.context.rotate(this.frontPropAngle);
+    this.drawProp();
+    this.context.restore();
 
-    // Draw the outter circle
-    this.context.beginPath()
-    this.context.arc(this.x, this.y, this.radius, 0, 2*Math.PI)
-    this.context.lineWidth = "4"
-    this.context.stroke()
+    this.context.save();
+    this.context.translate( 50,-50);
+    this.context.rotate(-this.backPropAngle);
+    this.drawProp();
+    this.context.restore();
 
-    // Draw the inner circle
-    this.context.beginPath()
-    this.context.arc(this.x, this.y, this.radius*0.6, 0, 2*Math.PI)
-    this.context.lineWidth = "3"
-    // Add dash to simulate the cool "eye effects"
-    this.context.setLineDash([3, 1])
-    this.context.strokeStyle = "rgb(117, 4, 11)"
-    this.context.stroke()
+    this.context.save();
+    this.context.translate(-50, 50);
+    this.context.rotate(-this.frontPropAngle);
+    this.drawProp();
+    this.context.restore();
+
+    this.context.save();
+    this.context.translate(-50,-50);
+    this.context.rotate(this.backPropAngle);
+    this.drawProp();
+    this.context.restore();
+    this.context.restore();
+
+    this.context.restore();
 }
-
-// Add one single magatama
-Sharingan.prototype.addMagatama = function(){
-    // Its actually very hard to draw the magatama without using curves
-    // I will use ordered fill to cover previous circle to make the tail
-    // So the order is: upper circle -> small circle -> mide circle
-
-    // Fill the upper circle
-    this.context.beginPath()
-    this.context.arc(this.radius*0.16*0.6, -this.radius*0.6,
-                     this.radius*0.25, Math.PI, 1.8*Math.PI)
-    this.context.closePath()
-    this.context.fillStyle = "black"
-    this.context.fill()
-
-    // Fill the right circle
-    this.context.beginPath()
-    this.context.arc(this.radius*0.6*Math.sin(20*Math.PI/180), -this.radius*0.6,
-                     this.radius*0.16, Math.PI, 1.8*Math.PI)
-    this.context.fillStyle=("rgb(172, 6, 15)")
-    this.context.closePath()
-    this.context.fill()
-
-    // Fill the center circle upon the previous circles
-    context.beginPath()
-    this.context.arc(0, -this.radius*0.6, this.radius*0.16, 0, 2*Math.PI)
-    this.context.fillStyle = "black"
-    this.context.fill()
-}
-
-// Draw three magatama
-Sharingan.prototype.drawMagatamas = function(){
-    this.context.save()
-    // Repeate 3 times
-    this.context.translate(this.x, this.y)
-    this.context.rotate(this.theta)
-    this.addMagatama()
-    this.context.rotate(2/3*Math.PI)
-    this.addMagatama()
-    this.context.rotate(2/3*Math.PI)
-    this.addMagatama()
-    this.context.restore()
-}
-
-// Draw sharingan itself
-Sharingan.prototype.draw = function(){
-    // We first fill the background color
-    this.fillBack()
-    // Then add the frames
-    this.drawFrames()
-    // Finally add 3 magatamas (top layer)
-    this.drawMagatamas()
-}
-
-// Rotate the sharingan
-Sharingan.prototype.update = function(){
-    this.theta += (2 * Math.PI / 180) * this.speed
+QuadCopter.prototype.update = function() {
+    this.backPropAngle  += 0.15;
+    this.frontPropAngle += 0.15 * this.frontFaster;
+    this.pathU += 0.1 * this.speed;
 }
