@@ -21,21 +21,21 @@ speed: <input id="slider1" type="range" min="0" max="100"/>
         // variables for the "program" - kept inside rather than global
         var theCanvas;
         var myContext;
-        // a slider for the speed of the eyes
+        // a slider for the speed
         var slider;
         // keep a list of the eyes - we can add more if we want
-        var theSharingans = [];
+        var theEyes = [];
 
         // animation loop - clear, update, draw, schedule the next iteration
         function draw() {
             myContext.clearRect(0, 0, myCanvas.width, myCanvas.height);
             myContext.fillStyle = "#000000";
             myContext.fillRect(0, 0, theCanvas.width, theCanvas.height);
-            theSharingans[0].speed = slider.value;
-            theSharingans[1].speed = slider.value;
+            theEyes[0].speed = slider.value;
+            theEyes[1].speed = slider.value;
             myContext.save();
-            theSharingans.forEach(function(c) { c.update();})
-            theSharingans.forEach(function(c) { c.draw(); })
+            theEyes.forEach(function(c) { c.update();})
+            theEyes.forEach(function(c) { c.draw(); })
             myContext.restore();
             window.requestAnimationFrame(draw);
         }
@@ -44,15 +44,15 @@ speed: <input id="slider1" type="range" min="0" max="100"/>
         theCanvas = document.getElementById('myCanvas');
         myContext = theCanvas.getContext('2d');
         slider = document.getElementById("slider1");
-        slider.value = 1;
+        slider.value = 0;
 
         // make some sharingans
-        theSharingans.push(new Sharingan(myContext, 30, 30, .5));
-        theSharingans.push(new Sharingan(myContext, 30, 30,.5));
+        theEyes.push(new Eyes(myContext, 30, 30, .5));
+        theEyes.push(new Eyes(myContext, 30, 30,.5));
 
         // attach them to paths so they fly around
-        theSharingans[0].path = new CirclePath(100,200,10);
-        theSharingans[1].path = new CirclePath(300,200,10);
+        theEyes[0].path = new CirclePath(100,200,10);
+        theEyes[1].path = new CirclePath(300,200,10);
         draw();
     }
 
