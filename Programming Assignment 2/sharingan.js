@@ -39,6 +39,10 @@ Sharingan.prototype.drawPupil = function() {
     this.context.beginPath();
     this.context.arc(100,200, 10, 0, 2*Math.PI);
     this.context.fill();
+
+    this.context.beginPath();
+    this.context.arc(300,200,10,0,2*Math.PI);
+    this.context.fill();
     this.context.restore();
 };
 
@@ -56,6 +60,14 @@ Sharingan.prototype.drawSclera = function() {
     this.context.restore();
 };
 
+Sharingan.prototype.drawMouth = function() {
+    this.context.save();
+    this.contextn.beginPath();
+    this.context.arc(200,300, 60, 0, Math.PI, true);
+    this.context.fill();
+    this.context.restore();
+};
+
 Sharingan.prototype.draw = function() {
     this.context.save();
 
@@ -67,6 +79,9 @@ Sharingan.prototype.draw = function() {
 
     this.context.fillStyle = "#000000";
     this.drawPupil();
+
+    this.context.fillStyle = "white";
+    this.drawMouth();
 
     this.context.save();
     var p = this.path.eval(this.pathU);
