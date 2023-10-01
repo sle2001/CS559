@@ -62,7 +62,7 @@ Sharingan.prototype.drawSclera = function() {
 
 Sharingan.prototype.drawMouth = function() {
     this.context.save();
-    this.contextn.beginPath();
+    this.context.beginPath();
     this.context.arc(200,300, 60, 0, Math.PI, true);
     this.context.fill();
     this.context.restore();
