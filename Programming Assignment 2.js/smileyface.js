@@ -2,7 +2,7 @@
 
 // this is the "class definition" - always use this with "new"
 // maybe a bad choice to attach it to a context, but seems easier than passing it around
-function Sharingan(context,x,y,sz,path)
+function Eyes(context,x,y,sz,path)
 {
     // these are it's properties
     this.size = sz;
@@ -15,14 +15,14 @@ function Sharingan(context,x,y,sz,path)
     this.context = context;
 }
 
-Sharingan.prototype.drawTomoe = function() {
+Eyes.prototype.drawTomoe = function() {
     this.context.save();
     this.context.beginPath();
     this.context.arc(100, 170, 10, 0, 2*Math.PI);
     this.context.fill();
     this.context.restore();
 };
-Sharingan.prototype.drawDashCircle = function() {
+Eyes.prototype.drawDashCircle = function() {
     this.context.save();
     this.context.beginPath();
     this.context.arc(100,200,30,0,2*Math.PI);
@@ -34,7 +34,7 @@ Sharingan.prototype.drawDashCircle = function() {
     this.context.restore();
 };
 
-Sharingan.prototype.drawPupil = function() {
+Eyes.prototype.drawPupil = function() {
     this.context.save();
     this.context.beginPath();
     this.context.arc(100,200, 10, 0, 2*Math.PI);
@@ -46,7 +46,7 @@ Sharingan.prototype.drawPupil = function() {
     this.context.restore();
 };
 
-Sharingan.prototype.drawSclera = function() {
+Eyes.prototype.drawSclera = function() {
     this.context.save();
     this.context.beginPath();
     this.context.arc(100, 200, 60, 0, 2*Math.PI);
@@ -60,7 +60,7 @@ Sharingan.prototype.drawSclera = function() {
     this.context.restore();
 };
 
-Sharingan.prototype.drawMouth = function() {
+Eyes.prototype.drawMouth = function() {
     this.context.save();
     this.context.beginPath();
     this.context.arc(200,300, 60, 0, Math.PI, false);
@@ -68,7 +68,7 @@ Sharingan.prototype.drawMouth = function() {
     this.context.restore();
 };
 
-Sharingan.prototype.draw = function() {
+Eyes.prototype.draw = function() {
     this.context.save();
 
 
@@ -100,6 +100,6 @@ Sharingan.prototype.draw = function() {
     this.drawPupil();
 }
 
-Sharingan.prototype.update = function() {
+Eyes.prototype.update = function() {
     this.pathU += 0.1 * this.speed;
 }
