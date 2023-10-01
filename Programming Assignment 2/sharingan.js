@@ -34,6 +34,14 @@ Sharingan.prototype.drawDashCircle = function() {
     this.context.restore();
 };
 
+Sharingan.prototype.drawPupil = function() {
+    this.context.save();
+    this.context.beginPath();
+    this.context.arc(100,200, 10, 0, 2*Math.PI);
+    this.context.fill();
+    this.context.restore();
+};
+
 Sharingan.prototype.drawSclera = function() {
     this.context.save();
     this.context.beginPath();
@@ -56,6 +64,9 @@ Sharingan.prototype.draw = function() {
 
     this.context.strokeStyle = "black";
     this.drawDashCircle();
+
+    this.context.fillStyle = "#000000";
+    this.drawPupil();
 
     this.context.save();
     var p = this.path.eval(this.pathU);
