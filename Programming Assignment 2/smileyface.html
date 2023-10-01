@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <title>Smiley Face</title>
 </head>
-
 <body>
 <canvas id = "myCanvas" width="400" height="400"></canvas>
-
 <br />
-speed: <input id="slider1" type="range" min="0" max="100"/>
+pattern: <input id="slider1" type="range" min="0" max="100"/>
 <br />
-
+horizontal: <input id="slider2" type="range" min="0" max="100"/>
+<br />
+vertical: <input id="slider3" type = "range" min="0" max = "100"/>
 <script src="smileyface.js"></script>
 <script src="paths.js"></script>
 <script>
@@ -21,8 +21,12 @@ speed: <input id="slider1" type="range" min="0" max="100"/>
         // variables for the "program" - kept inside rather than global
         var theCanvas;
         var myContext;
-        // a slider for the speed
-        var slider;
+        // a slider for the pattern
+        var slider1;
+        // a slider for dx
+        var slider2;
+        // a slider for dy
+        var slider3;
         // keep a list of the eyes - we can add more if we want
         var theEyes = [];
 
@@ -31,9 +35,10 @@ speed: <input id="slider1" type="range" min="0" max="100"/>
             myContext.clearRect(0, 0, myCanvas.width, myCanvas.height);
             myContext.fillStyle = "#000000";
             myContext.fillRect(0, 0, theCanvas.width, theCanvas.height);
-            theEyes[0].speed = slider.value;
-            theEyes[1].speed = slider.value;
+            theEyes[0].speed = slider1.value;
+            theEyes[1].speed = slider1.value;
             myContext.save();
+            myContext.translate(dx, dy)
             theEyes.forEach(function(c) { c.update();})
             theEyes.forEach(function(c) { c.draw(); })
             myContext.restore();
@@ -43,8 +48,14 @@ speed: <input id="slider1" type="range" min="0" max="100"/>
         // set up the elements
         theCanvas = document.getElementById('myCanvas');
         myContext = theCanvas.getContext('2d');
-        slider = document.getElementById("slider1");
-        slider.value = 0;
+        slider1 = document.getElementById("slider1");
+        slider2 = document.getElementById("slider2");
+        slider3 = document.getElementById("slider3");
+        slider1.value = 0;
+        slider2.value = 0;
+        slider3.value = 0;
+        var dx = slider2.value;
+        var dy = slider3.value;
 
         // make some sharingans
         theEyes.push(new Eyes(myContext, 30, 30, .5));
