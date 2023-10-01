@@ -1,8 +1,8 @@
 function CirclePath(x,y,r) {
     "use strict";
-    this.x = x || 200;
-    this.y = y || 200;
-    this.r = r || 100;
+    this.x = x;
+    this.y = y;
+    this.r = r;
 }
 CirclePath.prototype.eval = function(u) {
     "use strict";
