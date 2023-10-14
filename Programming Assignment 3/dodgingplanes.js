@@ -1,8 +1,6 @@
 function setup() {
     var canvas = document.getElementById('myCanvas');
     var context = canvas.getContext('2d');
-	context.fillStyle = "black";
-	context.fillRect(0, 0, canvas.width, canvas.height);
     var slider1 = document.getElementById('slider1');
     slider1.value = -25;
 
@@ -112,13 +110,73 @@ function setup() {
             context.stroke();
 	}
 
-	// make sure you understand these    	
+	function drawBackground() {
+		context.beginPath();
+		context.fillStyle = "black";
+		context.moveTo(0,0);
+		context.lineTo(400,0);
+		context.lineTo(400,400);
+		context.lineTo(0,400);
+		context.closePath();
+		context.fill();
+
+		context.beginPath();
+		context.fillStyle = "gray";
+		context.moveTo(50,120);
+		context.lineTo(50,150);
+		context.lineTo(0,150);
+		context.lineTo(50,170)
+		context.lineTo(50,200);
+		context.lineTo(60,206);
+		context.lineTo(70,200);
+		context.lineTo(70,170);
+		context.lineTo(120,150);
+		context.lineTo(70,150);
+		context.lineTo(70,120);
+		context.closePath();
+		context.fill();
+
+		context.beginPath();
+		context.fillStyle = "gray";
+		context.moveTo(335, 300);
+		context.lineTo(325, 294);
+		context.lineTo(325, 264);
+		context.lineTo(275, 244);
+		context.lineTo(325,244);
+		context.lineTo(325,194);
+		context.lineTo(345,194);
+		context.lineTo(345,244);
+		context.lineTo(395,244);
+		context.lineTo(345,264);
+		context.lineTo(345,294)
+		context.closePath();
+		context.fill();
+
+		context.beginPath();
+		context.fillStyle = "gray";
+		context.moveTo(200,65);
+		context.lineTo(190,59);
+		context.lineTo(190,29);
+		context.lineTo(140,9);
+		context.lineTo(190,9);
+		context.lineTo(190,0);
+		context.lineTo(210,0);
+		context.lineTo(210,9);
+		context.lineTo(260,9);
+		context.lineTo(210,29);
+		context.lineTo(210,59);
+		context.closePath();
+		context.fill();
+
+	}
+
+	drawBackground();
 	var Tblue_to_canvas = mat3.create();
 	mat3.fromTranslation(Tblue_to_canvas,[50,350]);
 	mat3.scale(Tblue_to_canvas,Tblue_to_canvas,[150,-150]); // Flip the Y-axis
 
-	drawTrajectory(0.0,1.0,100,C0,Tblue_to_canvas,"white");
-	drawTrajectory(0.0,1.0,100,C1,Tblue_to_canvas,"white");
+	drawTrajectory(0.0,1.0,100,C0,Tblue_to_canvas,"black");
+	drawTrajectory(0.0,1.0,100,C1,Tblue_to_canvas,"black");
 	var Tgreen_to_blue = mat3.create();
 	mat3.fromTranslation(Tgreen_to_blue,Ccomp(tParam));
 	var Tgreen_to_canvas = mat3.create();
