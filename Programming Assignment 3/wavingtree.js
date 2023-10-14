@@ -1,6 +1,8 @@
 function setup() {
     var canvas = document.getElementById('myCanvas');
     var context = canvas.getContext('2d');
+	context.fillStyle = "black";
+	context.fillRect(0, 0, canvas.width, canvas.height);
     var slider1 = document.getElementById('slider1');
     slider1.value = -25;
 
@@ -18,43 +20,22 @@ function setup() {
 	function drawObject(color,Tx) {
 	    context.beginPath();
 	    context.fillStyle = color;
-	    moveToTx([-.05,-.05],Tx);
-	    lineToTx([-.05,.05],Tx);
-            lineToTx([.05,.05],Tx);
-      	    lineToTx([.1,0],Tx);
+	    moveToTx([-.55,-.05],Tx);
+	    lineToTx([-.55,.05],Tx);
+        lineToTx([.05,.05],Tx);
+      	lineToTx([.1,0],Tx);
 	    lineToTx([.05,-.05],Tx);
 	    context.closePath();
 	    context.fill();
-	}
-	
-	function drawAxes100unit(color,Tx) {
-	    context.strokeStyle=color;
-	    context.beginPath();
-	    // Axes
-	    moveToTx([120,0],Tx);lineToTx([0,0],Tx);lineToTx([0,120],Tx);
-	    // Arrowheads
-	    moveToTx([110,5],Tx);lineToTx([120,0],Tx);lineToTx([110,-5],Tx);
-	    moveToTx([5,110],Tx);lineToTx([0,120],Tx);lineToTx([-5,110],Tx);
-	    // X-label
-	    moveToTx([130,0],Tx);lineToTx([140,10],Tx);
-	    moveToTx([130,10],Tx);lineToTx([140,0],Tx);
-	    context.stroke();
-	}
 
-	function drawAxes1unit(color,Tx) {
-	    context.strokeStyle=color;
-	    context.beginPath();
-	    // Axes
-	    moveToTx([1.20,0],Tx);lineToTx([0,0],Tx);lineToTx([0,1.20],Tx);
-	    // Arrowheads
-	    moveToTx([1.10,.05],Tx);lineToTx([1.20,0],Tx);lineToTx([1.10,-.05],Tx);
-	    moveToTx([.05,1.10],Tx);lineToTx([0,1.20],Tx);lineToTx([-.05,1.10],Tx);
-	    // X-label
-	    moveToTx([1.30,0],Tx);lineToTx([1.40,.10],Tx);
-	    moveToTx([1.30,.10],Tx);lineToTx([1.40,0],Tx);
-	    context.stroke();
+		context.beginPath();
+		context.fillStyle = color;
+		moveToTx([-.25, -.4],Tx);
+		lineToTx([-.25, .4],Tx);
+		lineToTx([-0.1, 0], Tx);
+		context.closePath();
+		context.fill();
 	}
-
 
 	var Hermite = function(t) {
 	    return [
@@ -131,17 +112,13 @@ function setup() {
             context.stroke();
 	}
 
-	// make sure you understand these    
-
-	drawAxes100unit("black", mat3.create());
-	
+	// make sure you understand these    	
 	var Tblue_to_canvas = mat3.create();
 	mat3.fromTranslation(Tblue_to_canvas,[50,350]);
 	mat3.scale(Tblue_to_canvas,Tblue_to_canvas,[150,-150]); // Flip the Y-axis
-	drawAxes1unit("grey",Tblue_to_canvas);
 
-	drawTrajectory(0.0,1.0,100,C0,Tblue_to_canvas,"red");
-	drawTrajectory(0.0,1.0,100,C1,Tblue_to_canvas,"blue");
+	drawTrajectory(0.0,1.0,100,C0,Tblue_to_canvas,"white");
+	drawTrajectory(0.0,1.0,100,C1,Tblue_to_canvas,"white");
 	var Tgreen_to_blue = mat3.create();
 	mat3.fromTranslation(Tgreen_to_blue,Ccomp(tParam));
 	var Tgreen_to_canvas = mat3.create();
@@ -149,7 +126,7 @@ function setup() {
 	var angle = Math.atan2(tangent[1],tangent[0]);
 	mat3.rotate(Tgreen_to_blue,Tgreen_to_blue,angle);
 	mat3.multiply(Tgreen_to_canvas, Tblue_to_canvas, Tgreen_to_blue);
-	drawObject("green",Tgreen_to_canvas);
+	drawObject("grey",Tgreen_to_canvas);
     }
     
     slider1.addEventListener("input",draw);
