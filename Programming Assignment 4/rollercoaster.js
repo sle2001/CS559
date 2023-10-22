@@ -19,7 +19,7 @@ function setup() {
     // Pushes a point and its derivative to the stack
     function pushHermitePoint(p, d) { 
         let last = res[res.length - 1]; 
-	res.push([last[2], last[3], p, d]); 
+		res.push([last[2], last[3], p, d]); 
     }
 
     // Returns the proportion of the current cycle
@@ -51,14 +51,14 @@ function setup() {
     function moveTo(x, y) {
         let pt = vec2.create(); 
         vec2.transformMat3(pt, [x, y], stack[0]); 
-	context.moveTo(pt[0], pt[1]); 
+		context.moveTo(pt[0], pt[1]); 
     }
     
     // Draws a line from the current transformation matrix to (x, y)
     function lineTo(x, y) {
         let pt = vec2.create(); 
         vec2.transformMat3(pt, [x, y], stack[0]); 
-	context.lineTo(pt[0], pt[1]); 
+		context.lineTo(pt[0], pt[1]); 
     }
 
     // Draws a circle with center (x, y) and radius
@@ -71,65 +71,65 @@ function setup() {
     // Fills a rectangle with color
     function fillRect(x, y, w, h, color) {
         context.fillStyle = color; 
-	context.beginPath();
+		context.beginPath();
         moveTo(x, y); 
-	lineTo(x + w, y); 
-	lineTo(x + w, y + h); 
-	lineTo(x, y + h);
+		lineTo(x + w, y); 
+		lineTo(x + w, y + h); 
+		lineTo(x, y + h);
         context.closePath(); 
-	context.fill();
+		context.fill();
     }
     
     // Draws the rollercoaster track
-    function rollercoaster(fillColor, strokeColor) { 
+    function rollercoaster(fillColor) { 
         save(); // Save the current transformation matrix
 
         // Variable declarations
         let coaster_length = 30;
         let coaster_height = 10; 
-        let door_height = 1; 
-        let head = 4; 
-        let door_start = 2; 
-        let wheel = 3;
-        context.strokeStyle = strokeColor; 
-	context.beginPath();
+        let head = 4;  
+        let wheel = 3; 
+		context.beginPath();
         let T_to_rollercoaster_center = mat3.create();
         
         mat3.fromTranslation(T_to_rollercoaster_center, [-coaster_length / 2, 0]); // Translate to the center of the rollercoaster
         multi(T_to_rollercoaster_center);
         fillRect(0, 0, coaster_length, coaster_height, fillColor); // Draw the rollercoaster
-        moveTo(coaster_length / 2, coaster_height); 
-	lineTo(coaster_length / 2, coaster_height + head);
-        moveTo(coaster_length / 2, coaster_height); 
-	lineTo(coaster_length / (2 + 8), coaster_height + 5);
-        moveTo(coaster_length / 2, coaster_height); 
-	lineTo(coaster_length / (2 - 8), coaster_height + 5);
-        context.stroke();
         context.closePath();
-        fillRect(door_start, (coaster_height / 2) - door_height, coaster_length-door_start - 2, door_height * 2, '#FFFFFF'); // Draw the door
 
         // Draw the wheels
         context.beginPath(); 
-	context.lineWidth = 3; 
-	context.fillStyle = '#ffdbac'; 
-        circle(coaster_length / 2, coaster_height + (head * 2), head, 0, 360);
-        context.closePath();
-	context.stroke();
-	context.fill();
-
-        // Draw the wheels
-        context.beginPath(); 
-	context.fillStyle = '#000000'; 
+		context.fillStyle = '#000000'; 
         circle(wheel, 0, wheel, 0, 360);
         context.closePath; 
-	context.stroke(); 
-	context.fill();
+		context.fill();
         context.beginPath();
-	context.fillStyle = '#000000';
+		context.fillStyle = '#000000';
         circle(coaster_length-wheel, 0, wheel, 0, 360);
-        context.closePath;
-	context.stroke(); 
-	context.fill();
+        context.closePath; 
+		context.fill();
+
+		// Draw the head
+		context.fillStyle = '#ffdbac'; 
+        context.beginPath(); 
+        circle(coaster_length / 2, coaster_height + (head * 2), head, 0, 360);
+        context.closePath();
+		context.fill();
+
+		// Draw body
+		context.fillStyle = "green";
+		context.beginPath();
+		circle(coaster_length/2, coaster_height - 1, head, 0, 360/2);
+		context.closePath();
+		context.fill();
+	
+		// Draw arms
+		context.strokeStyle = "#ffdbac"
+		context.beginPath();
+		moveTo(coaster_length / 2, coaster_height+2); 
+		lineTo(coaster_length / 2, coaster_height + (head*3.5));
+        context.closePath();
+		context.stroke();
 
         restore(); // Restore the last transformation matrix
     }
@@ -147,8 +147,8 @@ function setup() {
         let angle = Math.atan2(tan[1], tan[0]);
         mat3.rotate(T_to_obj_rot, T_to_obj_rot, angle);
         multi(T_to_obj);
-	multi(T_to_obj_rot);
-        rollercoaster('#FFA500', '#FFA500');
+		multi(T_to_obj_rot);
+        rollercoaster('red');
         
         restore(); // Restore the transformation matrix
     }
