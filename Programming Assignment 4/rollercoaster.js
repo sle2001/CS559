@@ -18,7 +18,8 @@ function setup() {
 
     // Pushes a point and its derivative to the stack
     function pushHermitePoint(p, d) { 
-        let last = res[res.length - 1]; res.push([last[2], last[3], p, d]); 
+        let last = res[res.length - 1]; 
+	res.push([last[2], last[3], p, d]); 
     }
 
     // Returns the proportion of the current cycle
@@ -49,13 +50,15 @@ function setup() {
     // Moves the current transformation matrix to (x, y)
     function moveTo(x, y) {
         let pt = vec2.create(); 
-        vec2.transformMat3(pt, [x, y], stack[0]); context.moveTo(pt[0], pt[1]); 
+        vec2.transformMat3(pt, [x, y], stack[0]); 
+	context.moveTo(pt[0], pt[1]); 
     }
     
     // Draws a line from the current transformation matrix to (x, y)
     function lineTo(x, y) {
         let pt = vec2.create(); 
-        vec2.transformMat3(pt, [x, y], stack[0]); context.lineTo(pt[0], pt[1]); 
+        vec2.transformMat3(pt, [x, y], stack[0]); 
+	context.lineTo(pt[0], pt[1]); 
     }
 
     // Draws a circle with center (x, y) and radius
@@ -67,9 +70,14 @@ function setup() {
     
     // Fills a rectangle with color
     function fillRect(x, y, w, h, color) {
-        context.fillStyle = color; context.beginPath();
-        moveTo(x, y); lineTo(x + w, y); lineTo(x + w, y + h); lineTo(x, y + h);
-        context.closePath(); context.fill();
+        context.fillStyle = color; 
+	context.beginPath();
+        moveTo(x, y); 
+	lineTo(x + w, y); 
+	lineTo(x + w, y + h); 
+	lineTo(x, y + h);
+        context.closePath(); 
+	context.fill();
     }
     
     // Draws the rollercoaster track
@@ -77,43 +85,48 @@ function setup() {
         save(); // Save the current transformation matrix
 
         // Variable declarations
-        let cLen = 30;
-        let cHei = 10; 
-        let dHei = 1; 
+        let coaster_length = 30;
+        let coaster_height = 10; 
+        let door_height = 1; 
         let head = 4; 
-        let dStart = 2; 
+        let door_start = 2; 
         let wheel = 3;
         context.strokeStyle = strokeColor; 
 	context.beginPath();
         let T_to_rollercoaster_center = mat3.create();
         
-        mat3.fromTranslation(T_to_rollercoaster_center, [-cLen / 2, 0]); // Translate to the center of the rollercoaster
+        mat3.fromTranslation(T_to_rollercoaster_center, [-coaster_length / 2, 0]); // Translate to the center of the rollercoaster
         multi(T_to_rollercoaster_center);
-        fillRect(0, 0, cLen, cHei, fillColor); // Draw the rollercoaster
-        moveTo(cLen / 2, cHei); 
-	lineTo(cLen / 2, cHei + head);
-        moveTo(cLen / 2, cHei); 
-	lineTo(cLen / (2 + 8), cHei + 5);
-        moveTo(cLen / 2, cHei); 
-	lineTo(cLen / (2 - 8), cHei + 5);
+        fillRect(0, 0, coaster_length, coaster_height, fillColor); // Draw the rollercoaster
+        moveTo(coaster_length / 2, coaster_height); 
+	lineTo(coaster_length / 2, coaster_height + head);
+        moveTo(coaster_length / 2, coaster_height); 
+	lineTo(coaster_length / (2 + 8), coaster_height + 5);
+        moveTo(coaster_length / 2, coaster_height); 
+	lineTo(coaster_length / (2 - 8), coaster_height + 5);
         context.stroke();
         context.closePath();
-        fillRect(dStart, (cHei / 2) - dHei, cLen-dStart - 2, dHei * 2, '#FFFFFF'); // Draw the door
+        fillRect(door_start, (coaster_height / 2) - door_height, coaster_length-door_start - 2, door_height * 2, '#FFFFFF'); // Draw the door
 
         // Draw the wheels
-        context.beginPath(); context.lineWidth = 3; context.fillStyle = '#ffdbac'; 
-        circle(cLen / 2, cHei + (head * 2), head, 0, 360);
-        context.closePath(); context.stroke(); context.fill();
+        context.beginPath(); 
+	context.lineWidth = 3; 
+	context.fillStyle = '#ffdbac'; 
+        circle(coaster_length / 2, coaster_height + (head * 2), head, 0, 360);
+        context.closePath();
+	context.stroke();
+	context.fill();
 
         // Draw the wheels
-        context.beginPath(); context.fillStyle = '#000000'; 
+        context.beginPath(); 
+	context.fillStyle = '#000000'; 
         circle(wheel, 0, wheel, 0, 360);
         context.closePath; 
 	context.stroke(); 
 	context.fill();
         context.beginPath();
 	context.fillStyle = '#000000';
-        circle(cLen-wheel, 0, wheel, 0, 360);
+        circle(coaster_length-wheel, 0, wheel, 0, 360);
         context.closePath;
 	context.stroke(); 
 	context.fill();
@@ -130,7 +143,7 @@ function setup() {
         mat3.fromTranslation(T_to_obj, composite(tObj, hermiteCurve));
         mat3.scale(T_to_obj, T_to_obj, [1 / 50, 1 / 50]);
         let T_to_obj_rot = mat3.create();
-        let tan = composite(tObj, hermiteDerivative)
+        let tan = composite(tObj, hermiteDerivative);
         let angle = Math.atan2(tan[1], tan[0]);
         mat3.rotate(T_to_obj_rot, T_to_obj_rot, angle);
         multi(T_to_obj);
@@ -149,7 +162,8 @@ function setup() {
                     cart = sliders[i].value; 
                 }
                 if (i == 2) { // If the slider is the second slider
-                    trackSize = sliders[2].value / 10000; hermiteInit();
+                    trackSize = sliders[2].value / 10000; 
+		    hermiteInit();
                 }
             }
         }
