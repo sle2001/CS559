@@ -2,7 +2,7 @@ function setup() {
 
     // Get the canvas element
     let canvas = document.getElementById('myCanvas'); 
-    let ctx = canvas.getContext('2d');
+    let context = canvas.getContext('2d');
 
     // Variable declarations
     let sliders = [];
@@ -49,13 +49,13 @@ function setup() {
     // Moves the current transformation matrix to (x, y)
     function moveTo(x, y) {
         let pt = vec2.create(); 
-        vec2.transformMat3(pt, [x, y], stack[0]); ctx.moveTo(pt[0], pt[1]); 
+        vec2.transformMat3(pt, [x, y], stack[0]); context.moveTo(pt[0], pt[1]); 
     }
     
     // Draws a line from the current transformation matrix to (x, y)
     function lineTo(x, y) {
         let pt = vec2.create(); 
-        vec2.transformMat3(pt, [x, y], stack[0]); ctx.lineTo(pt[0], pt[1]); 
+        vec2.transformMat3(pt, [x, y], stack[0]); context.lineTo(pt[0], pt[1]); 
     }
 
     // Draws a circle with center (x, y) and radius
@@ -67,9 +67,9 @@ function setup() {
     
     // Fills a rectangle with color
     function fillRect(x, y, w, h, color) {
-        ctx.fillStyle = color; ctx.beginPath();
+        context.fillStyle = color; context.beginPath();
         moveTo(x, y); lineTo(x + w, y); lineTo(x + w, y + h); lineTo(x, y + h);
-        ctx.closePath(); ctx.fill();
+        context.closePath(); context.fill();
     }
     
     // Draws the rollercoaster track
@@ -83,31 +83,40 @@ function setup() {
         let head = 4; 
         let dStart = 2; 
         let wheel = 3;
-        ctx.strokeStyle = strokeColor; ctx.beginPath();
+        context.strokeStyle = strokeColor; 
+	context.beginPath();
         let T_to_rollercoaster_center = mat3.create();
         
         mat3.fromTranslation(T_to_rollercoaster_center, [-cLen / 2, 0]); // Translate to the center of the rollercoaster
         multi(T_to_rollercoaster_center);
         fillRect(0, 0, cLen, cHei, fillColor); // Draw the rollercoaster
-        moveTo(cLen / 2, cHei); lineTo(cLen / 2, cHei + head);
-        moveTo(cLen / 2, cHei); lineTo(cLen / (2 + 8), cHei + 5);
-        moveTo(cLen / 2, cHei); lineTo(cLen / (2 - 8), cHei + 5);
-        ctx.stroke();
-        ctx.closePath();
+        moveTo(cLen / 2, cHei); 
+	lineTo(cLen / 2, cHei + head);
+        moveTo(cLen / 2, cHei); 
+	lineTo(cLen / (2 + 8), cHei + 5);
+        moveTo(cLen / 2, cHei); 
+	lineTo(cLen / (2 - 8), cHei + 5);
+        context.stroke();
+        context.closePath();
         fillRect(dStart, (cHei / 2) - dHei, cLen-dStart - 2, dHei * 2, '#FFFFFF'); // Draw the door
 
         // Draw the wheels
-        ctx.beginPath(); ctx.lineWidth = 3; ctx.fillStyle = '#ffdbac'; 
+        context.beginPath(); context.lineWidth = 3; context.fillStyle = '#ffdbac'; 
         circle(cLen / 2, cHei + (head * 2), head, 0, 360);
-        ctx.closePath(); ctx.stroke(); ctx.fill();
+        context.closePath(); context.stroke(); context.fill();
 
         // Draw the wheels
-        ctx.beginPath(); ctx.fillStyle = '#000000'; 
+        context.beginPath(); context.fillStyle = '#000000'; 
         circle(wheel, 0, wheel, 0, 360);
-        ctx.closePath; ctx.stroke(); ctx.fill();
-        ctx.beginPath(); ctx.fillStyle = '#000000';
+        context.closePath; 
+	context.stroke(); 
+	context.fill();
+        context.beginPath();
+	context.fillStyle = '#000000';
         circle(cLen-wheel, 0, wheel, 0, 360);
-        ctx.closePath; ctx.stroke(); ctx.fill();
+        context.closePath;
+	context.stroke(); 
+	context.fill();
 
         restore(); // Restore the last transformation matrix
     }
@@ -124,7 +133,8 @@ function setup() {
         let tan = composite(tObj, hermiteDerivative)
         let angle = Math.atan2(tan[1], tan[0]);
         mat3.rotate(T_to_obj_rot, T_to_obj_rot, angle);
-        multi(T_to_obj); multi(T_to_obj_rot);
+        multi(T_to_obj);
+	multi(T_to_obj_rot);
         rollercoaster('#FFA500', '#FFA500');
         
         restore(); // Restore the transformation matrix
@@ -220,10 +230,10 @@ function setup() {
     // Draws the curve
     function drawCurve(t0, t1, granularity, curve, T, color, P, thickness) {
         // Variable declarations
-        ctx.strokeStyle = color;
-        ctx.lineWidth = thickness;
+        context.strokeStyle = color;
+        context.lineWidth = thickness;
 
-        ctx.beginPath(); // Begin the path
+        context.beginPath(); // Begin the path
         P ? moveTo(curve(hermiteCurve, P, t0), T) : moveTo(curve(t0), T); // Move to the first point
 
         for(let i = 0; i <= granularity; ++i) { // Loop through the curve
@@ -233,7 +243,7 @@ function setup() {
             lineTo(coordinate[0], coordinate[1]);
         }
 
-        ctx.stroke(); // Draw the curve
+        context.stroke(); // Draw the curve
     }
 
     // Shifts the matrix
