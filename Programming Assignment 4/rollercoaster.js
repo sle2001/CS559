@@ -95,8 +95,6 @@ function setup() {
     // Draws the rollercoaster track
     function rollercoaster(fillColor) { 
         save(); // Save the current transformation matrix
-
-		drawBackground();
 		
         // Variable declarations
         let coaster_length = 30;
@@ -151,6 +149,8 @@ function setup() {
     // Positions the rollercoaster
     function positionRollercoaster(tObj) { 
         save(); // Save the current transformation matrix
+		
+		drawBackground();
 		
         // Translate the rollercoaster to the correct position
         let T_to_obj = mat3.create();
