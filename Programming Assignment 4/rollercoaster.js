@@ -79,11 +79,25 @@ function setup() {
         context.closePath(); 
 		context.fill();
     }
+
+	function drawBackground() {
+		context.fillStyle = "orange"
+		context.beginPath();
+		context.moveTo(0,0);
+		context.lineTo(0,300);
+		context.lineTo(1000,300);
+		context.lineTo(1000,0);
+		context.closePath();
+		context.fill();
+		
+	}
     
     // Draws the rollercoaster track
     function rollercoaster(fillColor) { 
         save(); // Save the current transformation matrix
 
+		drawBackground();
+		
         // Variable declarations
         let coaster_length = 30;
         let coaster_height = 10; 
@@ -137,7 +151,7 @@ function setup() {
     // Positions the rollercoaster
     function positionRollercoaster(tObj) { 
         save(); // Save the current transformation matrix
-
+		
         // Translate the rollercoaster to the correct position
         let T_to_obj = mat3.create();
         mat3.fromTranslation(T_to_obj, composite(tObj, hermiteCurve));
@@ -283,7 +297,7 @@ function setup() {
         elapsed = timestamp - start; // Get the elapsed time
         save(); // Save the transformation matrix
         let T_to_curve = mat3.create(); // Create the transformation matrix
-        mat3.fromTranslation(T_to_curve, [100, 350]); // Translate the transformation matrix
+        mat3.fromTranslation(T_to_curve, [100, 450]); // Translate the transformation matrix
         mat3.scale(T_to_curve, T_to_curve, [55, -55]); // Scale the transformation matrix
         multi(T_to_curve); // Multiply the transformation matrix
         let shift = 0.04; // Set the shift value
