@@ -283,7 +283,7 @@ function setup() {
         elapsed = timestamp - start; // Get the elapsed time
         save(); // Save the transformation matrix
         let T_to_curve = mat3.create(); // Create the transformation matrix
-        mat3.fromTranslation(T_to_curve, [100, 450]); // Translate the transformation matrix
+        mat3.fromTranslation(T_to_curve, [100, 350]); // Translate the transformation matrix
         mat3.scale(T_to_curve, T_to_curve, [55, -55]); // Scale the transformation matrix
         multi(T_to_curve); // Multiply the transformation matrix
         let shift = 0.04; // Set the shift value
