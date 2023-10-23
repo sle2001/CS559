@@ -81,15 +81,14 @@ function setup() {
     }
 
 	function drawBackground() {
-		context.fillStyle = "orange"
+		context.fillStyle = "black";
 		context.beginPath();
 		context.moveTo(0,0);
-		context.lineTo(0,300);
-		context.lineTo(1000,300);
+		context.lineTo(0,600);
+		context.lineTo(1000,600);
 		context.lineTo(1000,0);
 		context.closePath();
 		context.fill();
-		
 	}
     
     // Draws the rollercoaster track
@@ -306,7 +305,7 @@ function setup() {
                 shiftMatrix(shift, shift);
             }
             for(let i = 0; i < res.length; ++i) { // Loop through the hermite curve
-                drawCurve(0, 1, 200, hermiteCubic, T_to_curve, 'black', res[i], 2);
+                drawCurve(0, 1, 200, hermiteCubic, T_to_curve, 'blue', res[i], 2);
             }
             if (track == 1) { // If the track is the second track
                 shiftMatrix(-shift, -shift);
