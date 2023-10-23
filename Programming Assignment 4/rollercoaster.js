@@ -294,7 +294,7 @@ function setup() {
 
         elapsed = timestamp - start; // Get the elapsed time
         save(); // Save the transformation matrix
-		drawBackground();
+	drawBackground();
         let T_to_curve = mat3.create(); // Create the transformation matrix
         mat3.fromTranslation(T_to_curve, [100, 450]); // Translate the transformation matrix
         mat3.scale(T_to_curve, T_to_curve, [55, -55]); // Scale the transformation matrix
