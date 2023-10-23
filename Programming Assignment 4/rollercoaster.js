@@ -109,13 +109,14 @@ function setup() {
         context.closePath();
 
         // Draw the wheels
-        context.beginPath(); 
 		context.fillStyle = '#000000'; 
+        context.beginPath(); 
         circle(wheel, 0, wheel, 0, 360);
         context.closePath; 
 		context.fill();
-        context.beginPath();
+
 		context.fillStyle = '#000000';
+        context.beginPath();
         circle(coaster_length-wheel, 0, wheel, 0, 360);
         context.closePath; 
 		context.fill();
@@ -293,7 +294,7 @@ function setup() {
 
         elapsed = timestamp - start; // Get the elapsed time
         save(); // Save the transformation matrix
-	drawBackground();
+		drawBackground();
         let T_to_curve = mat3.create(); // Create the transformation matrix
         mat3.fromTranslation(T_to_curve, [100, 450]); // Translate the transformation matrix
         mat3.scale(T_to_curve, T_to_curve, [55, -55]); // Scale the transformation matrix
