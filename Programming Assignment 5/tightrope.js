@@ -1,6 +1,6 @@
 function setup() {
     let canvas = document.getElementById('myCanvas');
-    let ctx = canvas.getContext('2d');
+    let context = canvas.getContext('2d');
 
     // Variable declarations
     let sliders = [];
@@ -16,46 +16,55 @@ function setup() {
     let distCamera = 200.0;
     let T_look_at = mat4.create();
 
-    function lookAtUpdate() { // Update the look at matrix
+    // Update the look at matrix
+    function lookAtUpdate() {
         locCamera[0] = distCamera * Math.sin(radian(viewAngle));
         locCamera[1] = 50;
         locCamera[2] = distCamera * Math.cos(radian(viewAngle));
         mat4.lookAt(T_look_at, locCamera, [0, 0, 0], [0, 1, 0]);
     }
 
-    function getProportionInTime() { // Get the proportion of time elapsed
+    // Get the proportion of time elapsed
+    function getProportionInTime() {
         return elapsed % cycle / cycle;
     }
 
-    function radian(angle) { // Convert angle to radian
+    // Degrees to radian
+    function radian(angle) {
         return angle * Math.PI / 180; 
     } 
 
-    function save() { // Save the current transformation matrix
+    // Save the current transformation matrix
+    function save() { 
         stack.unshift(mat4.clone(stack[0])); 
     }
 
-    function restore() { // Restore the last transformation matrix
+    // Restore the last transformation matrix
+    function restore() { 
         stack.shift(); 
     }
 
-    function multi(T) { // Multiply the current transformation matrix with T
+    // Multiply the current transformation matrix with T
+    function multi(T) { 
         return mat4.multiply(stack[0], stack[0], T); 
     }
-    
-    function moveTo(loc) { // Move to the location
+
+    // Move to the location
+    function moveTo(loc) { 
         let pt = vec3.create(); 
         vec3.transformMat4(pt, loc, stack[0]);
-        ctx.moveTo(pt[0], pt[1]); 
-    }
-    
-    function lineTo(loc) { // Draw a line to the location
-        let pt = vec3.create(); 
-        vec3.transformMat4(pt, loc, stack[0]); 
-        ctx.lineTo(pt[0], pt[1]); 
+        context.moveTo(pt[0], pt[1]); 
     }
 
-    function drawGrid(axesColor, gridColor, size, beyondFloor) { // Draw the grid
+    // Draw a line to the location
+    function lineTo(loc) { 
+        let pt = vec3.create(); 
+        vec3.transformMat4(pt, loc, stack[0]); 
+        context.lineTo(pt[0], pt[1]); 
+    }
+
+    // Draw the grid
+    function drawGrid(axesColor, gridColor, size, beyondFloor) { 
         // Variable declarations
         let x = [-size, size]; 
         let x_step = size / 5;
@@ -64,51 +73,61 @@ function setup() {
         let z = [-size, size]; 
         let z_step = size / 5;
         
-        ctx.strokeStyle = gridColor; // Set the grid color
+        context.strokeStyle = gridColor; // Set the grid color
 
-        if (!beyondFloor) { // Draw the grid on the floor
-            ctx.beginPath(); // Start drawing
+        // Draw the grid on the floor
+        if (!beyondFloor) { 
+            context.beginPath(); // Start drawing
 
-            for (let xx = x[0]; xx <= x[1]; xx += x_step) {  // Draw the vertical lines
+            // Draw the vertical lines
+            for (let xx = x[0]; xx <= x[1]; xx += x_step) {  
                 moveTo([xx, 0, z[0]]); lineTo([xx, 0, z[1]]); 
             }
-            for (let zz = z[0]; zz <= z[1]; zz += z_step) { // Draw the horizontal lines
+
+            // Draw the horizontal lines
+            for (let zz = z[0]; zz <= z[1]; zz += z_step) { 
                 moveTo([x[0], 0, zz]); lineTo([x[1], 0, zz]); 
             }
-            ctx.stroke(); // Finish drawing
-
+            
+            context.stroke(); // Finish drawing
             return;
         }
 
-        ctx.lineWidth = 1; // Set the line width
-        ctx.beginPath(); // Start drawing
-
-        for (let zz = z[0]; zz <= z[1]; zz += z_step) { // Draw the horizontal lines
-            for (let yy = y[0]; yy <= y[1]; yy += y_step) { // Draw the vertical lines
+        context.lineWidth = 1; // Set line width
+        context.beginPath();
+        // Draw the horizontal lines
+        for (let zz = z[0]; zz <= z[1]; zz += z_step) { 
+            // Draw the vertical lines
+            for (let yy = y[0]; yy <= y[1]; yy += y_step) { 
                 moveTo([x[0], yy, zz]); lineTo([x[1], yy, zz]); 
             }
-            for (let xx = x[0]; xx <= x[1]; xx += x_step) { // Draw the vertical lines
+            // Draw the vertical lines
+            for (let xx = x[0]; xx <= x[1]; xx += x_step) { 
                 moveTo([xx, y[0], zz]); lineTo([xx, y[1], zz]); 
                 }
         }
-        for (let yy = y[0]; yy <= y[1]; yy += y_step) { // Draw the vertical lines
-            for (let xx = x[0]; xx <= x[1]; xx += x_step) { // Draw the vertical lines
+
+        // Draw the vertical lines
+        for (let yy = y[0]; yy <= y[1]; yy += y_step) { 
+            // Draw the vertical lines
+            for (let xx = x[0]; xx <= x[1]; xx += x_step) {
                 moveTo([xx, yy, z[0]]); lineTo([xx, yy, z[1]]); 
             }
         }
-        ctx.stroke(); // Finish drawing
-        ctx.strokeStyle = axesColor; // Set the axes color
-        ctx.lineWidth = 2; // Set the line width
-        ctx.beginPath(); // Start drawing
-
+        context.stroke();
+        
+        context.strokeStyle = axesColor; 
+        context.lineWidth = 2; 
+        context.beginPath();
         // Draw the axes
         moveTo([x[0], 0, 0]); lineTo([x[1], 0, 0]);
         moveTo([0, y[0], 0]); lineTo([0, y[1], 0]);
         moveTo([0, 0, z[0]]); lineTo([0, 0, z[1]]);
-        ctx.stroke(); // Finish drawing
+        context.stroke();
     }
 
-    function bezierInit(distance, maxFloor) { // Initialize the bezier curve
+    // Initialize the bezier curve
+    function bezierInit(distance, maxFloor) { 
         // Variable initializations 
         let edgeX = distance / 2 - floorRadiusRange[1];
         let p = getProportionInTime(); p = p < 0.5 ? p * 2 : (0.5-(p - 0.5)) * 2;
@@ -118,11 +137,13 @@ function setup() {
         curve[0] = [[-edgeX, maxFloor, 0], [centerX, dentY, 0], [centerX, dentY, 0], [edgeX, maxFloor, 0]];
     }
 
-    function bezierBasis(t) { // Get the bezier basis
+    // Get the bezier basis
+    function bezierBasis(t) { 
         return [1 - 3 * t + 3 * t * t - t * t * t, 3 * t - 6 * t * t + 3 * t * t * t, 3 * t * t - 3 * t * t * t, t * t * t]; 
     }
 
-    function someCubic(Basis, P,t) { // Get the cubic bezier curve
+    // Get the cubic bezier curve
+    function someCubic(Basis, P,t) { 
         // Variable initializations
         let b = Basis(t);
         let result = vec3.create();
@@ -134,7 +155,8 @@ function setup() {
         return result;
     }
 
-    function composite(t, B) { // Get the composite bezier curve
+    // Get the composite bezier curve
+    function composite(t, B) { 
         for(let i = 0; i < curve.length; ++i) { // Get the composite bezier curve
             if (i <= t && t < i + 1) { // Get the composite bezier curve
                 return someCubic(B, curve[i], t < 1 ? t : t % i);
@@ -144,9 +166,10 @@ function setup() {
         }
     }
 
-    function body(neckHeight) { // Draw the body
+    // Draw the body
+    function body(neckHeight) { 
         // Draw the body
-        ctx.beginPath();
+        context.beginPath();
         moveTo([0, neckHeight, 0]);
         lineTo([0, neckHeight / 2, 0]); // Draw the neck
         lineTo([neckHeight / 8, neckHeight / 3, -neckHeight / 9]); // Draw the left leg
@@ -154,27 +177,40 @@ function setup() {
         moveTo([0, neckHeight / 2, 0]); // Draw the right leg
         lineTo([neckHeight / 8, neckHeight / 3, neckHeight / 9]);
         lineTo([0, 0, 0]);
-        ctx.stroke();
+        context.stroke();
         
         // Draw the arms
-        ctx.beginPath();
+        context.beginPath();
         moveTo([0, neckHeight / 3 * 2.2, 0]); // Draw the left arm
         lineTo([neckHeight / 4, neckHeight / 3 * 1.8, neckHeight / 8]);
         lineTo([neckHeight / 2, neckHeight / 3 * 1.6, 0]);
         moveTo([0, neckHeight / 3 * 2.2, 0]); // Draw the right arm
         lineTo([neckHeight / 4, neckHeight / 3 * 1.8, -neckHeight / 8]);
         lineTo([neckHeight / 2, neckHeight / 3 * 1.6, 0]);
+        context.stroke();
+        
     }
 
-    function person() { // Draw the object
-        ctx.strokeStyle = '#000000'; // Set the color
-        ctx.lineWidth = 2; // Set the line width
-        ctx.beginPath(); // Start drawing
-        body(1.5); // Draw the body'
-        ctx.stroke(); // Finish drawing
+    // Draw the object
+    function person() { 
+        context.strokeStyle = '#000000'; 
+        context.lineWidth = 2; 
+        context.beginPath(); 
+        body(1.5); // Draw the body
+        context.stroke(); 
+
+        // Draw giant stick
+        context.strokeStyle = '#9C4722';
+        context.lineWidth = 2;
+        context.beginPath();
+        moveTo([0, 1.5 / 3 * 1.8, 0]);
+        lineTo([1.5 * 2, 1.5 / 3 * 1.8, 1.5 / 8]);
+        context.stroke();
+        
     }
-    
-    function positionObject() { // Position the object
+
+     // Position the object
+    function positionObject() {
         save(); // Save the current transformation matrix
         let T_to_obj = mat4.create(); // Create a transformation matrix
         mat4.fromTranslation(T_to_obj, composite(tObj, bezierBasis)); // Create a transformation matrix
@@ -190,41 +226,46 @@ function setup() {
         restore(); // Restore the previous transformation matrix
     }
 
-    function drawCurve(t0, t1, granularity, curve, color, P, thickness) { // Draw the curve
+    // Draw the curve
+    function drawCurve(t0, t1, granularity, curve, color, P, thickness) { 
         // Variable initializations
-        ctx.strokeStyle = color;
-        ctx.lineWidth = thickness;
-        ctx.beginPath();
+        context.strokeStyle = color;
+        context.lineWidth = thickness;
+        context.beginPath();
 
         P ? moveTo(curve(bezierBasis, P, t0)) : moveTo(curve(t0)); // Draw the curve
 
-        for(let i = 0; i <= granularity; ++i) { // Draw the curve
+        // Draw the curve
+        for(let i = 0; i <= granularity; ++i) { 
             let p = (granularity - i) / granularity;
             let t = p * t0 + (i / granularity) * t1;
             let coordinate = P ? curve(bezierBasis, P, t) : curve(t); 
             lineTo(coordinate);
         }
-        ctx.stroke(); // Finish drawing
+        context.stroke(); // Finish drawing
     }
 
     let floorRadiusRange = [3 / 3, 10 / 3]; // The range of the floor radius
 
-    function getFloorRadius(floor, maxFloor, midFloor) { // Get the floor radius
+    // Get the floor radius
+    function getFloorRadius(floor, maxFloor, midFloor) { 
         // Variable declarations
         let radius; 
         let min = floorRadiusRange[0]; 
         let range = floorRadiusRange[1] - floorRadiusRange[0];
 
-        if (floor >= midFloor) { // If the floor is greater than the middle floor
+        // If the floor is greater than the middle floor or not
+        if (floor >= midFloor) { 
             radius = min + range * (floor-midFloor) / (maxFloor-midFloor);
-        } else { // If the floor is less than the middle floor
+        } else { 
             radius = min + range * (midFloor-floor) / (maxFloor - (maxFloor - midFloor));
         }
 
         return radius;
     }
 
-    function drawBuilding(maxFloor, midFloor, buildingSide, strokeColor, roofColor) { // Draw the building
+    // Draw the building
+    function drawBuilding(maxFloor, midFloor, buildingSide, strokeColor, roofColor) { 
         // Variable initializations
         let floorRadius;
         let rad;
@@ -234,10 +275,11 @@ function setup() {
         let x; 
         let y; 
         let z;
-        ctx.strokeStyle = strokeColor; 
-        ctx.lineWidth = 2;
-        
-        var isInvisible = function(angle) { // Check if the angle is invisible
+        context.strokeStyle = strokeColor; 
+        context.lineWidth = 2;
+
+        // Check if the angle is invisible
+        var isInvisible = function(angle) { 
             // Variable initializations
             let compareAngle = Math.abs(angle - startAngle);
             let va = viewAngle % 360;
@@ -249,8 +291,9 @@ function setup() {
             }
         }
 
-        var bottomToMiddle = function(angle, fillColor, strokeColor) { // Draw the bottom to middle part of the building
-            ctx.beginPath();
+        // Draw the bottom to middle part of the building
+        var bottomToMiddle = function(angle, fillColor, strokeColor) { 
+            context.beginPath();
             rad = radian(angle);
             x = floorRadiusRange[1] * Math.cos(rad);
             z = floorRadiusRange[1] * Math.sin(rad);
@@ -265,14 +308,15 @@ function setup() {
             x = floorRadiusRange[1] * Math.cos(rad);
             z = floorRadiusRange[1] * Math.sin(rad);
             lineTo([x, 0, z]);
-            ctx.closePath();
-            ctx.strokeStyle = strokeColor;
-            ctx.stroke();
-            ctx.fillStyle = fillColor;
-            ctx.fill();
+            context.closePath();
+            context.strokeStyle = strokeColor;
+            context.stroke();
+            context.fillStyle = fillColor;
+            context.fill();
         }
 
-        var middleToTop = function(angle, fillColor, strokeColor) { // Draw the middle to top part of the building
+        // Draw the middle to top part of the building
+        var middleToTop = function(angle, fillColor, strokeColor) { 
             rad = radian(angle);
             x = floorRadiusRange[0] * Math.cos(rad);
             z = floorRadiusRange[0] * Math.sin(rad);
@@ -287,47 +331,17 @@ function setup() {
             x = floorRadiusRange[0] * Math.cos(rad);
             z = floorRadiusRange[0] * Math.sin(rad);
             lineTo([x, maxFloor - midFloor, z]);
-            ctx.closePath();
-            ctx.strokeStyle = strokeColor;
-            ctx.stroke();
-            ctx.fillStyle = fillColor;
-            ctx.fill();
+            context.closePath();
+            context.strokeStyle = strokeColor;
+            context.stroke();
+            context.fillStyle = fillColor;
+            context.fill();
         }
 
-        var helipad = function(color) { // Draw the helipad
-            let r = 2.5;
-            moveTo([r, maxFloor, 0]);
 
-            for (let angle = 0; angle <= 360; angle += angleJump) {  // Draw the helipad
-                lineTo([r * Math.cos(radian(angle)), maxFloor, r * Math.sin(radian(angle))]); 
-            }
-
-            ctx.closePath();
-            ctx.strokeStyle = color; ctx.stroke();
-            save();
-            let T_h_resize = mat4.create();
-            mat4.scale(T_h_resize, T_h_resize, [0.35, 1, 0.2]);
-            multi(T_h_resize);
-            ctx.beginPath();
-            moveTo([-3, maxFloor, 1]);
-            lineTo([3, maxFloor, 1]);
-            lineTo([3, maxFloor, 7]);   
-            lineTo([5, maxFloor, 7]);
-            lineTo([5, maxFloor, -7]);  
-            lineTo([3, maxFloor, -7]);
-            lineTo([3, maxFloor, -1]);  
-            lineTo([-3, maxFloor, -1]);
-            lineTo([-3, maxFloor, -7]); 
-            lineTo([-5, maxFloor, -7]);
-            lineTo([-5, maxFloor, 7]);  
-            lineTo([-3, maxFloor, 7]);
-            ctx.closePath();
-            ctx.fillStyle = color; ctx.fill();
-            restore();
-        }
-
-        var roofBarrier = function(color, barrierHeight, buildingSide) { // Draw the roof barrier
-            ctx.beginPath();
+        // Draw the roof barrier
+        var roofBarrier = function(color, barrierHeight, buildingSide) { 
+            context.beginPath();
             moveTo([floorRadius * Math.cos(startRadian), y + barrierHeight, floorRadius * Math.sin(startRadian)]);
 
             for (let angle = startAngle; angle >= startAngle - 360; angle -= angleJump) { // Draw the roof barrier
@@ -355,27 +369,28 @@ function setup() {
                 angle += angleJump;
             }
 
-            ctx.strokeStyle = color;
-            ctx.stroke();
+            context.strokeStyle = color;
+            context.stroke();
         }
 
-        for (let angle = startAngle; angle >= startAngle - 360; angle -= angleJump) { // Draw the buildings
+        // Draw the buildings
+        for (let angle = startAngle; angle >= startAngle - 360; angle -= angleJump) { 
             if (isInvisible(angle)) { // If the building is invisible
                 continue;
             }
 
             let fillColor = '#A8CAE2'
-            let strokeColor = '#FFFFFF'
-
+            let strokeColor = 'black'
             bottomToMiddle(angle, fillColor, strokeColor);
             middleToTop(angle, fillColor, strokeColor);
         }
 
-        for (let floor = maxFloor; floor >= 0; floor--) { // Draw the floors 
+        // Draw the floors 
+        for (let floor = maxFloor; floor >= 0; floor--) { 
             y = maxFloor-floor;
             floorRadius = getFloorRadius(floor, maxFloor, midFloor);
 
-            ctx.beginPath();
+            context.beginPath();
             moveTo([floorRadius * Math.cos(startRadian), y, floorRadius * Math.sin(startRadian)]);
 
             for (let angle = startAngle; angle >= startAngle-360; angle -= angleJump) { // Draw the floors
@@ -393,26 +408,28 @@ function setup() {
                 }
             }
 
-            ctx.stroke();
+            context.stroke();
 
-            if (floor == 0) {  // If the floor is the bottom floor
-                ctx.closePath(); ctx.fillStyle = roofColor; ctx.fill();
-                helipad("#FFFF00");
+            // If the floor is the bottom floor
+            if (floor == 0) { 
+                context.closePath(); context.fillStyle = roofColor; context.fill();
             }
         }
 
         roofBarrier("#808080", 0.3, buildingSide);
     }
 
-    function positionBuildingsAndRope(distance) { // Position the buildings and the rope
+    // Position the buildings and the rope
+    function positionBuildingsAndRope(distance) { 
         // Variable declarations
         let maxFloor = 22;
-        let midFloor = 4;
-        let strokeColor = "#000000";
-        let roofColor = "#808080";
+        let midFloor = 10;
+        let strokeColor = "gray";
+        let roofColor = "black";
         let ropeColor = "#875638";
 
-        var leftBuilding = function() { // Draw the left building
+        // Draw the left building
+        var leftBuilding = function() { 
             save();
             let T_to_left_building = mat4.create();
             mat4.fromTranslation(T_to_left_building, [-distance / 2, 0, 0]);
@@ -421,7 +438,8 @@ function setup() {
             restore();
         }
 
-        var rightBuilding = function() { // Draw the right building
+        // Draw the right building
+        var rightBuilding = function() { 
             save();
             let T_to_right_building = mat4.create();
             mat4.fromTranslation(T_to_right_building, [distance / 2, 0, 0]);
@@ -430,25 +448,28 @@ function setup() {
             restore();
         }
 
-        var drawRope = function() { // Draw the rope
+        // Draw the rope
+        var drawRope = function() { 
             for (let i = 0; i < curve.length; ++i)
-                drawCurve(0, 1, 200, someCubic, ropeColor, curve[i], 7);
+                drawCurve(0, 1, 200, someCubic, ropeColor, curve[i], 5);
         }
 
         bezierInit(distance, maxFloor); // Initialize the bezier curve
 
-        if (viewAngle % 360 > 180) { // If the view angle is greater than 180
+        // If the view angle is greater than 180 or not
+        if (viewAngle % 360 > 180) { 
             rightBuilding(); 
             drawRope(); 
             leftBuilding();
-        } else { // If the view angle is less than 180
+        } else { 
             leftBuilding(); 
             drawRope(); 
             rightBuilding();
         }
     }
 
-    function sliderUpdate() { // Update the slider
+    // Update the slider
+    function sliderUpdate() { 
         for(let i = 0; i < 1; ++i) {
             if (sliderValues[i] != sliders[i].value) {
                 sliderValues[i] = (sliders[i].value);
@@ -456,8 +477,9 @@ function setup() {
         }
     }
 
-    function sliderInit() { // Initialize the sliders
-        for(let i = 0; i < 1; ++i) { // Initialize the sliders
+    // Initialize the sliders
+    function sliderInit() { 
+        for(let i = 0; i < 1; ++i) { 
             sliders[i] = (document.getElementById('slider' + i)); 
             sliders[i].addEventListener("input", draw);
         }
@@ -465,12 +487,14 @@ function setup() {
         sliders[0].value = 0; // Set the view angle slider to 0
         sliderUpdate(); // Update the sliders
     }
-    
-    function draw(timestamp) { // Draw the scene
+
+    // Draw the scene
+    function draw(timestamp) { 
         canvas.width = canvas.width; // Clear the canvas
         timestamp = Date.now(); // Get the current time
 
-        if (start === undefined) { // If the start time is undefined
+        // If the start time is undefined
+        if (start === undefined) { 
             start = timestamp;
         }
 
@@ -481,6 +505,7 @@ function setup() {
         sliderUpdate(); // Update the sliders
         viewAngle = getProportionInTime() * 360; // Get the view angle
         lookAtUpdate(); // Update the look at matrix
+        
         save(); // Save the current matrix
         let T_viewport = mat4.create(); // Create the viewport matrix
         let scale = 20; // Set the scale
@@ -491,7 +516,7 @@ function setup() {
         multi(T_viewport); // Multiply the viewport matrix
         multi(T_projection); // Multiply the projection matrix
         multi(T_look_at); // Multiply the look at matrix
-        drawGrid("white", "#333", 50, sliders[0].value == 1 ? true : false); // Draw the grid
+        drawGrid("black", "#333", 50, sliders[0].value == 1 ? true : false); // Draw the grid
         positionBuildingsAndRope(40); // Position the buildings and the rope
         positionObject(); // Position the object
         restore(); // Restore the matrix
