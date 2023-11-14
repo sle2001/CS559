@@ -4,15 +4,10 @@ uniform vec2 resolution;
 varying vec3 fPosition;
 varying vec3 fNormal;
 varying vec3 uPos;
-
-// A function to generate random number, found from Stackoverflow
-float rand(vec2 n) { 
-  return fract(sin(dot(n, vec2(12.9898, 4.1414))) * 43758.5453);
-}
+varying vec3 rawX;
 
 void main(){
 
-  
   // Normalize the coord x, y to between 0 to 1
   vec2 normalized_frag_coord = gl_FragCoord.xy / resolution;
   vec3 color = vec3(0);
@@ -26,7 +21,7 @@ void main(){
   vec2 hack_xy = vec2(xs, ys);
 
   // Use the modle location to draw changing circles
-  float len = length(abs(hack_xy) - fract(sin(time*0.5) * 3.0));
+  float len = length(abs(hack_xy) - fract(sin(time*0.01) * 1.0));
   
   // Add diffusive light to it, otherwise the color would
   // cover all the shape
@@ -39,4 +34,6 @@ void main(){
                
   
   gl_FragColor = vec4(color, 1.0);
+  
+  if(sin(1000.0*rawX.x)>0.3) discard;
 }
