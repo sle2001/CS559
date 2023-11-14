@@ -11,11 +11,31 @@ varying vec3 fPosition;
 // Self-defined variables
 varying vec3 uPos;
 const float PI = 3.14159265359;
+varying vec3 modelX;
+varying vec3 modelN;
+varying vec3 rawX;
+
+
+vec2 Rotate2D(vec2 vec_in, float angle)
+{
+  vec2 vec_out;
+  vec_out.x=cos(angle)*vec_in.x-sin(angle)*vec_in.y;
+  vec_out.y=sin(angle)*vec_in.x+cos(angle)*vec_in.y;
+  return vec_out;
+}
 
 void main()
 {
   // fNormal is used also in the fragment shader
   fNormal = normalize(normalMatrix * normal);
+  
+  modelX=position;
+  rawX=position;
+  modelN=normal;  
+  
+  // Comment these lines out to stop twisting
+  modelX.xz = Rotate2D(modelX.xz,0.5*PI*modelX.y*sin(10.0*time)); // Try commenting out *just* this line :)
+  modelN.xz = Rotate2D(modelN.xz,0.5*PI*modelX.y*sin(10.0*time)); // This is simple as that only since the transform is rotation
   
   // Model -> World -> Camera
   // Rotate the model
