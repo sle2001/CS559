@@ -1,46 +1,42 @@
 precision highp float;
-attribute vec3 position;
-attribute vec3 normal;
 uniform float time;
-uniform mat3 normalMatrix;
-uniform mat4 modelViewMatrix;
-uniform mat4 projectionMatrix;
-varying vec3 fNormal;
+uniform vec2 resolution;
 varying vec3 fPosition;
-
-// Self-defined variables
+varying vec3 fNormal;
 varying vec3 uPos;
-const float PI = 3.14159265359;
 
-void main()
-{
-  // fNormal is used also in the fragment shader
-  fNormal = normalize(normalMatrix * normal);
+// A function to generate random number, found from Stackoverflow
+float rand(vec2 n) { 
+  return fract(sin(dot(n, vec2(12.9898, 4.1414))) * 43758.5453);
+}
+
+void main(){
+
   
-  // Model -> World -> Camera
-  // Rotate the model
-  vec3 axis = vec3(1, 1, 1);
-  float angle = sin(time);
+  // Normalize the coord x, y to between 0 to 1
+  vec2 normalized_frag_coord = gl_FragCoord.xy / resolution;
+  vec3 color = vec3(0);
   
-  mat4 rotationMatrix = mat4(
-    (1.0-cos(angle)) * axis.x * axis.x + cos(angle),
-    (1.0-cos(angle)) * axis.x * axis.y - axis.z * sin(angle), 
-    (1.0-cos(angle)) * axis.z * axis.x + axis.y * sin(angle),
-    0.0,
-    (1.0-cos(angle)) * axis.x * axis.y + axis.z * sin(angle),
-    (1.0-cos(angle)) * axis.y * axis.y + cos(angle),
-    (1.0-cos(angle)) * axis.y * axis.z - axis.x * sin(angle), 
-    0.0,
-    (1.0-cos(angle)) * axis.z * axis.x - axis.y * sin(angle),
-    (1.0-cos(angle)) * axis.y * axis.z + axis.x * sin(angle),
-    (1.0-cos(angle)) * axis.z * axis.z + cos(angle),
-    0.0,
-    0.0, 0.0, 0.0, 1.0);
+  vec2 multi_xy = normalized_frag_coord * 10.0;
+  multi_xy = fract(multi_xy);
   
-  vec4 pos = modelViewMatrix * rotationMatrix * vec4(position, 1.0);
-  fPosition = pos.xyz;
-  uPos = position.xyz;
+  // Hacks to do the texture
+  float xs = fract(uPos.x*5.0);
+  float ys = fract(uPos.y*5.0);
+  vec2 hack_xy = vec2(xs, ys);
+
+  // Use the modle location to draw changing circles
+  float len = length(abs(hack_xy) - fract(sin(time*0.5) * 3.0));
   
-  // Project the camera view to the screen
-  gl_Position = projectionMatrix * pos;
+  // Add diffusive light to it, otherwise the color would
+  // cover all the shape
+  float diffusive = max(0.0, dot(fNormal, vec3(.707,.707,0)));
+  
+  // Add on the changing base color
+  color = vec3(fract(len * 8.0 * (0.2 + abs(sin(time*4.0))))) *
+              (.3 +.9*diffusive) + 
+              vec3((sin(time*2.0)), 0.0, 0.0);
+               
+  
+  gl_FragColor = vec4(color, 1.0);
 }
