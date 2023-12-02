@@ -188,6 +188,8 @@ function setup() {
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     }
 
+    function nothing() {}
+
     function draw() { // Draw the scene
         time = time + .1; // Update the time
         time = time + slider3.value * 0.01; // Use slider to change the time
@@ -250,8 +252,8 @@ function setup() {
     }
 
     // Call sliders
-    slider1.addEventListener("input", draw);
-    slider2.addEventListener("input", draw);
+    slider1.addEventListener("input", nothing);
+    slider2.addEventListener("input", nothing);
 
     // Function calls
     draw();
