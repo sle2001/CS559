@@ -157,7 +157,7 @@ function setup() {
 
     // Set up the texture
     var texture = gl.createTexture();
-    gl.activeTexture(gl.TEXTURE);
+    gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
 
@@ -171,7 +171,7 @@ function setup() {
         };
 
         image.crossOrigin = "anonymous";
-        image.src = "https://i.pinimg.com/originals/1e/90/7a/1e907a42d51e28ed679f9da830e86476.jpg"
+        image.src = "shibu_base64"
         
         window.setTimeout(draw, 200);
     }
