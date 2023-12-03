@@ -198,7 +198,7 @@ function setup() {
 
         // Variable initializations
         var angleCamera = time * 0.001 * Math.PI;
-        var lightDir = slider1.value * 0.001 * Math.PI;
+        var lightDir = slider1.value * 0.05 * Math.PI;
         var angleRotate = slider2.value * 0.03 * Math.PI;
         var eye = [400 * Math.sin(angleCamera), 200.0, 400 * Math.cos(angleCamera)];
         var target = [0, 0, 0];
