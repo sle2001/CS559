@@ -171,7 +171,7 @@ function setup() {
         };
 
         image.crossOrigin = "anonymous";
-        image.src = "https://live.staticflickr.com/65535/53371715869_851fa2777f_o.jpg"
+        image.src = "https://live.staticflickr.com/65535/53371614493_107f9d0085_o.jpg"
         
         window.setTimeout(draw, 200);
     }
