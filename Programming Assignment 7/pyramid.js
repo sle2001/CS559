@@ -79,19 +79,19 @@ function setup() {
 
     // Vertex positions
     var vertexPos = new Float32Array(
-      [ 0, 1.400, 0,     -1, 0, -1,     1, 0, -1,
-        0, 1.400, 0,      1, 0, -1,     1, 0, 1,
-        0, 1.400, 0,      1, 0, 1,     -1, 0, 1,
-        0, 1.400, 0,     -1, 0, 1,     -1, 0, -1,
-        -1, 0, -1,        1, 0, -1,     1, 0, 1,
-        1, 0, 1,         -1, 0, 1,     -1, 0, -1  ]);
+      [ 1, 1.600, 0,     -1, 1, -1,     1, 0, -1,
+        1, 1.600, 0,      1, 1, -1,     1, 0, 1,
+        1, 1.600, 0,      1, 1, 1,     -1, 0, 1,
+        1, 1.600, 0,     -1, 1, 1,     -1, 0, -1,
+        -1, 0, -1,        1, 1, -1,     1, 0, 1,
+        1, 0, 1,         -1, 1, 1,     -1, 0, -1  ]);
 
     // Vertex normals
     var vertexNormals = new Float32Array(
-      [ 0, 1, 1.400,     -1, 1, 1,     1, 1, 1,
-        1.400, 1, 0,      1, 1, 1,     1, 1, -1,
-        0, 1, -1.400,     1, 1, -1,   -1, 1, -1,
-        -1.400, 1, 0,    -1, 1, -1,   -1, 1, 1,
+      [ 0, 1, 1.900,     -1, 1, 1,     1, 1, 1,
+        1.900, 1, 0,      1, 1, 1,     1, 1, -1,
+        0, 1, -1.900,     1, 1, -1,   -1, 1, -1,
+        -1.900, 1, 0,    -1, 1, -1,   -1, 1, 1,
         -1, -1, 1,        1, -1, 1,    1, -1, -1,
         1, -1, -1,       -1, -1, -1,  -1, -1, 1    ]);
 
@@ -191,15 +191,15 @@ function setup() {
     function nothing() {}
 
     function draw() { // Draw the scene
-        time = time + .1; // Update the time
+        time = time + .5; // Update the time
         time = time + slider3.value * 0.01; // Use slider to change the time
 
         window.requestAnimationFrame(draw); // Request the next frame
 
         // Variable initializations
-        var angleCamera = time * 0.01 * Math.PI;
-        var lightDir = slider1.value * 0.01 * Math.PI;
-        var angleRotate = slider2.value * 0.01 * Math.PI;
+        var angleCamera = time * 0.001 * Math.PI;
+        var lightDir = slider1.value * 0.001 * Math.PI;
+        var angleRotate = slider2.value * 0.03 * Math.PI;
         var eye = [400 * Math.sin(angleCamera), 200.0, 400 * Math.cos(angleCamera)];
         var target = [0, 0, 0];
         var up = [0, 1, 0];
@@ -222,7 +222,7 @@ function setup() {
         mat3.normalFromMat4(tMVn, tMV);
         mat4.multiply(tMVP, tProjection, tMV);
         
-        var light = [Math.sin(lightDir), 1.5, Math.cos(lightDir)];
+        var light = [Math.sin(lightDir), -1, Math.cos(lightDir)];
 
         // Clear the canvas and render
         gl.clearColor(0.0, 0.0, 0.0, 1.0);
