@@ -1,4 +1,4 @@
-function start() {
+function setup() {
 
     // Get canvas, WebGL context, twgl.m4
     var canvas = document.getElementById("mycanvas");
