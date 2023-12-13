@@ -105,12 +105,12 @@ function setup() {
     
     // vertex texture coordinates
     var vertexTextureCoords = new Float32Array(
-        [  0, 0,   1, 0,   1, 1,   0, 1,
-           1, 0,   1, 1,   0, 1,   0, 0,
-           0, 1,   0, 0,   1, 0,   1, 1,
-           0, 0,   1, 0,   1, 1,   0, 1,
-           1, 1,   0, 1,   0, 0,   1, 0,
-           1, 1,   0, 1,   0, 0,   1, 0 ]);
+        [  0, 1,   1, 1,   0, 0,   1, 0,
+           1, 1,   0, 1,   1, 0,   0, 0,
+           0, 0,   1, 0,   0, 1,   1, 1,
+           1, 0,   0, 0,   1, 1,   0, 1,
+           0, 1,   1, 1,   0, 0,   1, 0,
+           1, 1,   0, 1,   1, 0,   0, 0 ]);
 
     // element index array
     var triangleIndices = new Uint8Array(
